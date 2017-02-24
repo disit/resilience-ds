@@ -1,0 +1,112 @@
+/* ResilienceDS
+   Copyright (C) 2017 DISIT Lab http://www.disit.org - University of Florence
+
+   This program is free software: you can redistribute it and/or modify
+   it under the terms of the GNU Affero General Public License as
+   published by the Free Software Foundation, either version 3 of the
+   License, or (at your option) any later version.
+
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU Affero General Public License for more details.
+
+   You should have received a copy of the GNU Affero General Public License
+   along with this program.  If not, see <http://www.gnu.org/licenses/>. */
+
+@CHARSET "ISO-8859-1";
+
+#menu-side {
+	position: absolute;
+	right: 20px;
+	top: 15px;
+	width: 50px;
+	height: 275px;
+	line-height:30px;
+	padding:2px;
+	
+	opacity:0.8;
+    filter:alpha(opacity=80); /* For IE8 and earlier */
+}
+
+#menu-side button{
+	cursor: pointer;
+}
+
+.button-side {
+	position:relative;
+	left: 4px;
+	width: 32px;
+	height: 32px;
+	margin-top:2px;
+	
+	-webkit-border-radius: 10;
+  	-moz-border-radius: 10;
+  	border-radius: 10px;
+  	border: solid #1f628d 2px;
+}
+
+#buttons-hv {
+	width: 100px;
+	height: 80px;
+}
+
+.button-hv {
+	width: 100px;
+	height:40px;
+}
+
+#help {
+	background: url(../../image/menu-side/help.png) no-repeat center;
+	background-size: 100%;
+}
+
+.fullscreen-in {
+	background: url(../../image/menu-side/fullscreen_in.png) no-repeat center;
+	background-size: 100%;
+}
+
+.fullscreen-out {
+	background: url(../../image/menu-side/fullscreen_out.png) no-repeat center;
+	background-size: 100%;
+}
+
+#recenter {
+	background: url(../../image/menu-side/recenter.png) no-repeat center;
+	background-size: 100%;
+}
+
+#rotate {
+	background: url(../../image/menu-side/rotate.png) no-repeat center;
+	background-size: 100%;
+}
+
+#zoomin {
+	background: url(../../image/menu-side/zoomin.png) no-repeat center;
+	background-size: 100%;
+}
+
+#zoomreset {
+	background: url(../../image/menu-side/zoomreset.png) no-repeat;
+	background-size: 100%;
+}
+
+#zoomout {
+	background: url(../../image/menu-side/zoomout.png) no-repeat;
+	background-size: 100%;
+}
+
+#print {
+	background: url(../../image/menu-side/print.png) no-repeat;
+	background-size: 100%;
+}
+
+#hideAspects {
+	background: url(../../image/menu-side/icon_eye.png) no-repeat;
+	background-size: 100%;
+}
+
+#showAspects {
+	background: url(../../image/menu-side/icon_eye_close.png) no-repeat;
+	background-size: 100%;
+}

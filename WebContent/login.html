@@ -1,0 +1,157 @@
+<!-- ResilienceDS
+Copyright (C) 2017 DISIT Lab http://www.disit.org - University of Florence
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>. -->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+	<title>Login SmartDS</title>
+	
+	<link rel="stylesheet" type="text/css" href="css/login/style.css"/>
+	
+	<script type="text/javascript" src="lib/jquery/jquery-1.11.2.min.js"></script>
+	
+	<script type="text/javascript" src="lib/toastr/toastr.min.js"></script>
+	<link rel="stylesheet" href="lib/toastr/toastr.min.css" type="text/css" media="screen" />
+
+</head>
+
+<body>
+
+	<div id="wrapper">
+
+    <div class="user-icon"></div>
+    <div class="pass-icon"></div>
+
+	<form id="login-form" name="login-form" class="login-form" action="login" method="post">
+	
+	    <div class="header"><div class="logo-container"><!-- <img src="" width="120px" height="100px"> --></div>
+	    	<h1>ResilienceDS<span class="span-version-mini"> v. 1.0beta</span></h1>
+	    	<span>Insert email and password to login in the application. You can also login as guest or register.</span>
+	    </div>
+	
+	    <div class="content">
+			<input id="email" name="email" type="text" class="input username" placeholder="Email" onkeypress="changeCheckbox()" onfocus="focusEmail()"/> 
+	    	<input id="password" name="password" type="password" class="input password" placeholder="Password" onkeypress="changeCheckbox()" onfocus="focusPass()"/>
+	    	<input name="guest" id="guest" type="checkbox" class="guest" value="Guest" title="Guest User can only visualize models and instances."/> <span>Guest</span>
+<!-- 	    	<input name="guest" id="guest" type="checkbox" class="guest" value="Guest" /> <span>Guest</span> -->
+	    	<input name="typeLogin" id="typeLogin" value="external" style="display:none"></input>
+	    	<br>
+	    	<br>
+	    	<span id="errorMsg" style="display:none;color:red"></span>
+	    	<span id="confirmMsg" style="display:none;color:red"></span>
+	    </div>
+
+	    <div class="footer">
+	    	<input type="submit" value="Login" class="button" />
+	    	<input type="button" name="register" value="Register" class="register" onclick="clickRegister()" />
+	    </div>
+	
+	</form>
+	
+	</div>
+	
+	<div class="gradient"></div>
+	
+<!--  	<span class="span-version">Version 2.0 beta</span>  -->
+	
+	<script type="text/javascript">
+	
+		$(document).ready(function() {
+			$(".username").focus(function() {
+				$(".user-icon").css("left","-48px");
+			});
+			$(".username").blur(function() {
+				$(".user-icon").css("left","0px");
+			});
+			
+			$(".password").focus(function() {
+				$(".pass-icon").css("left","-48px");
+			});
+			$(".password").blur(function() {
+				$(".pass-icon").css("left","0px");
+			});
+			
+			$("confirmMsg").css("display","none");
+			$("errorMsg").css("display","none");
+		});
+		
+		function changeCheckbox()
+		{
+			document.getElementById("guest").checked = false;
+		}
+		
+		function focusEmail()
+		{
+			$('#email').css("box-shadow","inset 0 1px 2px #000");
+		}
+		
+		function focusPass()
+		{
+			$('#password').css("box-shadow","inset 0 1px 2px #000");
+		}
+		
+		function clickRegister()
+		{
+			location.href='register.html';
+		}
+		
+		function warningEmailPass()
+		{
+			$("confirmMsg").css("display","none");
+			$('#errorMsg').text("No user found with given email id and password, please register first.");
+			$('#errorMsg').show();
+		}
+		
+		$('#login-form').submit(function()
+		{	
+			var emptyField = false; 
+			
+			if(!$('#guest').prop("checked"))
+			{
+				if($('#email').val() == "")
+				{
+					$('#email').css("box-shadow", "inset 0 1px 10px red");
+					emptyField = true;
+				}
+				if($('#password').val() == "")
+				{
+					$('#password').css("box-shadow", "inset 0 1px 10px red");
+					emptyField = true;
+				}
+			}
+			else
+				return true;
+				
+			if(!emptyField)
+				return true;
+			else
+				return false;
+		});
+		
+		function registrationOk()
+		{
+			$('#errorMsg').css("display","none");
+			$('#confirmMsg').text("Registration successfull...");
+			$('#confirmMsg').show();	
+		}
+		
+	</script>
+
+</body>
+</html>

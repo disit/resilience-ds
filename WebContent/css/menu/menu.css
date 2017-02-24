@@ -1,0 +1,180 @@
+/* ResilienceDS
+   Copyright (C) 2017 DISIT Lab http://www.disit.org - University of Florence
+
+   This program is free software: you can redistribute it and/or modify
+   it under the terms of the GNU Affero General Public License as
+   published by the Free Software Foundation, either version 3 of the
+   License, or (at your option) any later version.
+
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU Affero General Public License for more details.
+
+   You should have received a copy of the GNU Affero General Public License
+   along with this program.  If not, see <http://www.gnu.org/licenses/>. */
+
+@CHARSET "ISO-8859-1";
+
+#menu-nav { 
+	width: 270px;
+	height:	80vh;
+	overflow-x: hidden;
+	overflow-y: auto;
+/* 	overflow-y: hidden; */
+	
+	margin-top:2px;
+	
+/* 	background-color: white; */
+}
+
+#button-menu {
+	position:relative;
+	left: 1px;
+	width: 32px;
+	height: 32px;
+	margin-bottom: 2px;
+	
+	-webkit-border-radius: 10;
+  	-moz-border-radius: 10;
+  	border-radius: 10px;
+  	border: solid #aaaaaa 2px;
+  	
+  	background: url(../../image/menu.png) no-repeat center;
+	background-size: 100%;
+}
+
+#button-menu:focus {
+	outline: 0;
+}
+
+.btn {
+	color: #000;
+	border-radius: 4px;
+	
+	-webkit-border-radius: 5;
+  	-moz-border-radius: 5;
+  	border-radius: 5px;
+  	border: solid #aaaaaa 1px;
+	
+	-moz-box-shadow: inset 0 1px 1px rgba(255,255,255,0.5);
+	-webkit-box-shadow: inset 0 1px 1px rgba(255,255,255,0.5);
+	box-shadow: inset 0 1px 1px rgba(255,255,255,0.5);
+	display: inline-block;
+
+	padding: 0.3em; 
+	width: 240px;
+	text-align: left;
+	
+	font-size: 13px;
+	font-style: normal;
+	font-variant: normal;
+	line-height: 20px;
+}
+
+.btn-text-model {
+	width: 100%;
+	cursor: inherit;
+	display: inline-block;
+	cursor: pointer;
+	overflow: hidden;
+}
+
+.btn-text-instance {
+	width: 175px;
+	cursor: inherit;
+	display: inline-block;
+}
+
+.imgsave-on-button {
+	-webkit-border-radius: 5;
+  	-moz-border-radius: 5;
+  	border-radius: 5px;
+  	border: solid #aaaaaa 2px;
+  	
+  	margin-top: 2px;
+}
+
+.imgstatus-on-button {
+	margin-top: 2px;
+}
+
+.green.btn {
+	background: linear-gradient(#6BDB55,#57B245);
+	text-shadow: 1px 1px 1px #57B245; 
+}
+
+.red.btn {
+	background: linear-gradient(#D60A0A,#B20808);
+	text-shadow: 1px 1px 1px #B20808; 
+}
+
+.blue.btn {
+	background: linear-gradient(#11A1D6,#0E86B2);
+	text-shadow: 1px 1px 1px #0E86B2; 
+}
+
+.new-model.btn {
+	background: linear-gradient(#ADFFAD,#99FF99);
+	font-weight: bold;
+}
+
+.new-instance.btn {
+	background: linear-gradient(#D6FFD6,#CCFFCC);
+	cursor: pointer;
+	width: 220px !important;
+	margin-left: 20px;
+}
+
+.user-undefined-model.btn {
+	background: linear-gradient(#CCCCCC,#AAAAAA);
+	font-weight: bold;
+	cursor: pointer;
+}
+
+.user-undefined-instance.btn {
+	background: linear-gradient(#EEEEEE,#CCCCCC);
+	cursor: pointer;
+	width: 220px !important;
+	margin-left: 20px;
+}
+
+.user-logged-model.btn {
+	background: linear-gradient(#94DBFF,#75D1FF);
+	font-weight: bold;
+	cursor: pointer;
+}
+
+.user-logged-instance.btn {
+	background: linear-gradient(#C2EBFF,#A3E0FF);
+	cursor: pointer;
+	width: 220px !important;
+	margin-left: 20px;
+}
+
+.save {
+	background-image: url(../../image/menu-sub/save.png);
+	background-position: right; 
+	background-repeat: no-repeat; 
+	background-size: 16px 16px;
+	
+	padding-right: 16px;
+}
+
+.small {
+	line-height: 1.75em;
+	padding: 0 1.5em; 
+}
+
+.large {
+	line-height: 3em;
+	padding: 0 3.5em; 
+}
+
+.btn-selected { 
+	box-shadow: inset 0 1px 1px rgba(255,255,255,0.2), inset 0 1.5em 1em rgba(0,0,0,0.3); 
+}
+
+.btn:hover { box-shadow: inset 0 1px 1px rgba(255,255,255,0.2), inset 0 1.5em 1em rgba(255,255,255,0.3); }
+
+.btn:active { box-shadow: inset 0 1px 1px rgba(255,255,255,0.2), inset 0 1.5em 1em rgba(0,0,0,0.3); }

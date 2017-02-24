@@ -1,0 +1,463 @@
+<!-- ResilienceDS
+Copyright (C) 2017 DISIT Lab http://www.disit.org - University of Florence
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>. -->
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+	<title>Slider User</title>
+	
+	<script type="text/javascript" src="js/data/user.js"></script>
+	
+	<!-- Sliding effect -->
+	<script src="lib/jquery/slide.js" type="text/javascript"></script>
+	
+	<!-- Style CSS -->
+	<link rel="stylesheet" href="css/home.css" type="text/css" media="screen" />
+	<link rel="stylesheet" href="css/slide_user/style.css" type="text/css" media="screen" />
+	<link rel="stylesheet" href="css/slide_user/slide.css" type="text/css" media="screen" />
+	
+</head>
+
+<body>
+
+	<div id="panel">
+		<div class="content clearfix">
+		
+			<div class="left_info" id="user_info">
+				<h3 id="textNameTitleInfo"></h3>
+				<label id="textEmailInfo"></label>
+				<br>
+				<label id="textCountryInfo"></label>	
+			</div>
+			
+			<div class="left" id="login">
+				<form class="clearfix" id="login-form-internal" action="login" method="post">
+					<h1>User Login</h1>
+					<label class="grey" for="email">Email</label>
+					<input type="text" class="field" name="email" id="email" size="23" onfocus="focusEmailLogin()">
+					<label class="grey" for="password">Password</label>
+					<input type="password" class="field" name="password" id="password" size="23" onfocus="focusPasswordLogin()">
+					<input type="text" name="typeLogin" value="internal" style="display:none">
+					<label id="errorMsg" style="color:red;display:none;font-weight:bold"></label>
+					<input type="submit" class="bt_login" name="submit" value="Login">
+				</form>
+			</div>
+			
+			<div class="left right" id="register">
+				<form id="register-form-internal" action="register" method="post">
+					<h1>Register User</h1>
+					<label class="grey" for="email_register">Email</label>
+					<input type="text" class="field" name="email" id="email_register" size="23" onfocus="focusEmailRegister()">
+					<label class="grey" for="pass_register">Password</label>
+					<input type="password" class="field" name="pass" id="pass_register" size="23" onfocus="focusPasswordRegister()">
+					<label class="grey" for="repass_register">Re-Password</label>
+					<input type="password" class="field" name="repass" id="repass_register" size="23" onfocus="focusRePassRegister()" onkeyup="keyupRePassRegister()">
+					<label class="grey" for="name_register">Name</label>
+					<input type="text" class="field" name="name" id="name_register" size="23" onfocus="focusNameRegister()">
+					<label class="grey" for="country_register">Country</label>
+					<input type="text" class="field" name="country" id="country_register" size="23" onfocus="focusCountryRegister()">
+					
+					<input type="text" name="typeRegister" value="internal" style="display:none">
+					<input type="submit" class="bt_register" name="submit" value="Register">
+				</form>
+			</div>			
+			
+			<div class="left right" id="modify_info" style="display:none">
+				<form id="modify-form" action="modify" method="post">
+					<h1>Modify User</h1>
+					<label class="grey" for="email_modify">Email</label>
+					<input type="text" class="field" name="email" id="email_modify" size="23" readonly="readonly">
+					<label class="grey" for="pass_modify">Password</label>
+					<input type="password" class="field" name="pass" id="pass_modify" size="23" onfocus="focusPasswordModify()">
+					<label class="grey" for="repass_modify">Re-Password</label>
+					<input type="password" class="field" name="repass" id="repass_modify" size="23" onfocus="focusRePassModify()" onkeyup="keyupRePassModify()">
+					<label class="grey" for="name_modify">Name</label>
+					<input type="text" class="field" name="name" id="name_modify" size="23" onfocus="focusNameModify()">
+					<label class="grey" for="country_modify">Country</label>
+					<input type="text" class="field" name="country" id="country_modify" size="23" onfocus="focusCountryModify()">
+					<input type="button" class="bt_modify" name="buttonSubmit" id="buttonSubmit" value="Modify">
+				</form>
+			</div>
+			
+			<div class="right_admin" id="div_admin">
+				<h1>Admin Panel</h1>
+				<form action="modify" id="admin-form" method="post">
+					<label>Select user to change his type!</label>
+					<select id="selectUsers"></select>
+					<br><br>
+					<select id="selectType" name="selectType" style="display:none">
+						<option value="2">User Advanced</option>
+						<option value="3">Decision Maker</option>
+						<option value="4">Administrator</option>
+					</select>
+					<br><br>
+					<input type="button" name="button" value="Modify" id="buttonSubmitFormAdmin" class="bt_modify"></input>
+				</form>
+			</div>
+			
+		</div>
+	</div>
+
+	<!-- The tab on top	 -->
+	<div class="tab" id="div">
+		<ul class="login">
+			<li class="left">&nbsp;</li>
+			<li><label id="nameUserHello"></label></li>
+			<li class="sep">|</li>
+			<li id="toggle">
+				<a id="open" class="open" href="#"><label id="LogInRegInfo">Log In | Register</label></a>
+				<a id="close" style="display: none;" class="close" href="#">Close Panel</a>			
+			</li>
+			<li id="sep_logout" class="sep" style="display:none">|</li>
+			<li id="logout" style="display:none">
+				<a id="open" href="logout" class="logout" onclick="clickLogout()"> Logout </a>	
+			</li>	
+			<li class="right">&nbsp;</li>
+		</ul> 
+	</div> 
+	
+	
+	<script type="text/javascript">
+	
+		$(document).ready(function() 
+		{
+// 			$("#open").attr("href", CONTEXT_ROOT+"/logout");
+			
+			if(user.getName() == "Guest")
+			{				
+				$('#login').css("display","block");
+				$('#register').css("display","block");
+				$('#user_info').css("display","none");
+				$('#modify_info').css("display","none");
+				$('#div_admin').css("display","none");
+				
+				$('#LogInRegInfo').text("Log In | Register");
+				$('#sep_logout').css("display","none");
+				$('#logout').css("display","none");
+			}
+			else{
+				initInfoUser();	
+				initModifyUser();
+				
+				$('#login').css("display","none");
+				$('#register').css("display","none");
+				$('#div_admin').css("display","none");
+				$('#user_info').css("display","block");
+				$('#modify_info').css("display","block");
+				
+				$('#LogInRegInfo').text("Open information");
+				$('#sep_logout').show();
+				$('#logout').show();
+				
+				if(user.getType() == "4"){
+					initAdminForm();
+					$('#div_admin').css("display","block");
+				}	
+			}
+			$('#nameUserHello').text("Hello " + user.getName() + "!");
+			
+			if(messageError !== null)
+			{
+				if(messageError != "" && messageError != "null")
+				{
+					$('#errorMsg').text(messageError);
+					$('#errorMsg').show();
+					
+					$('#open').trigger("click");
+				}	
+			}
+		});
+		
+		// Set delle informazioni dell'utente registrato
+		function initInfoUser()
+		{
+			$('#textNameTitleInfo').text("Hi " + user.getName()+"!");
+			$('#textEmailInfo').text("Email: " + user.getEmail());
+			$('#textCountryInfo').text("Country: " + user.getCountry());
+		}
+		
+		function getUserData(id_user, email, name, country)
+		{
+			user.setName(name);
+			user.setCountry(country);
+			
+			if(user.getType() == 4)
+			{
+				users[util.getIndexById(users, id_user)].setName(name);
+				users[util.getIndexById(users, id_user)].setCountry(country);
+			}
+			
+			$('#name_modify').val(name);
+			$('#country_modify').val(country);
+			
+			$('#textCountryInfo').text("Country: " + country);
+			$('#textNameTitleInfo').text("Hi " + name + "!");
+			$('#nameUserHello').text("Hello " + name + "!");
+		}
+		
+		function getUserType(id_user, userType)
+		{			
+			users[util.getIndexById(users, id_user)].setType(userType);
+			
+			initAdminForm();
+			$('#selectType').val(0);
+		}
+		
+		/* --------------------------------------------------------------------------------------------------------- */
+		/* ------------------------------------------- FORM LOGIN UTENTE ------------------------------------------- */
+		/* --------------------------------------------------------------------------------------------------------- */
+		
+		$(document).on('submit','#login-form-internal',function()
+		{
+			var emptyField = false; 
+
+			if($('#email').val() == "")
+			{
+				$('#email').css("box-shadow", "0 0 10px red");
+				emptyField = true;
+			}
+			if($('#password').val() == "")
+			{
+				$('#password').css("box-shadow", "0 0 10px red");
+				emptyField = true;
+			}
+				
+			if(!emptyField)
+				return true;
+			else
+				return false;
+		});
+		
+		function focusEmailLogin()
+		{
+			$('#email').css("box-shadow", "0 0 0px #000");
+		}
+		
+		function focusPasswordLogin()
+		{
+			$('#password').css("box-shadow", "0 0 0px #000");
+		}
+		
+		/* --------------------------------------------------------------------------------------------------------- */
+		/* ------------------------------------- FORM REGISTRAZIONE UTENTE ----------------------------------------- */
+		/* --------------------------------------------------------------------------------------------------------- */
+		
+		function focusEmailRegister()
+		{
+			$('#email_register').css("box-shadow", "0 0 0px #000");
+		}
+		
+		function focusPasswordRegister()
+		{
+			$('#pass_register').css("box-shadow", "0 0 0px #000");
+		}
+		
+		function focusRePassRegister()
+		{
+			$('#repass_register').css("box-shadow", "0 0 0px #000");
+		}
+		
+		function focusNameRegister()
+		{
+			$('#name_register').css("box-shadow", "0 0 0px #000");
+		}
+		
+		function focusCountryRegister()
+		{
+			$('#country_register').css("box-shadow", "0 0 0px #000");
+		}
+		
+		function keyupRePassRegister()
+		{
+			if($('#repass_register').val() != null && $("#pass_register").val() != null)
+			{
+				if($('#repass_register').val() === $("#pass_register").val())
+					$('#repass_register').css("box-shadow", "0 0 10px green");
+				else
+					$('#repass_register').css("box-shadow", "0 0 10px red");
+			}
+		}
+		
+		$(document).on('submit','#register-form-internal',function()
+		{
+			
+			var emptyField = false; 
+			
+			if($('#email_register').val() == "")
+			{
+				$('#email_register').css("box-shadow", "0 0 10px red");
+				emptyField = true;
+			}
+			if($('#pass_register').val() == "")
+			{
+				$('#pass_register').css("box-shadow", "0 0 10px red");
+				emptyField = true;
+			}
+			if($('#repass_register').val() == "")
+			{
+				$('#repass_register').css("box-shadow", "0 0 10px red");
+				emptyField = true;
+			}
+			if($('#name_register').val() == "")
+			{
+				$('#name_register').css("box-shadow", "0 0 10px red");
+				emptyField = true;
+			}
+			if($('#country_register').val() == "")
+			{
+				$('#country_register').css("box-shadow", "0 0 10px red");
+				emptyField = true;
+			}
+			
+			if(!emptyField)
+			{
+				if($("#repass_register").val() == $("#pass_register").val())
+					return true;
+				else
+					$('#repass_register').css("box-shadow", "0 0 10px red");
+			}
+			return false;
+		});
+		
+		/* --------------------------------------------------------------------------------------------------------- */
+		/* ------------------------------------- FORM MODIFICA DATI UTENTE ----------------------------------------- */
+		/* --------------------------------------------------------------------------------------------------------- */
+
+		function initModifyUser()
+		{
+			$('#email_modify').val(user.getEmail());
+			$('#name_modify').val(user.getName());
+			$('#country_modify').val(user.getCountry());
+		}
+	
+		
+		function focusPasswordModify()
+		{
+			$('#pass_modify').css("box-shadow", "0 0 0px #000");
+		}
+		
+		function focusRePassModify()
+		{
+			$('#repass_modify').css("box-shadow", "0 0 0px #000");
+		}
+		
+		function focusNameModify()
+		{
+			$('#name_modify').css("box-shadow", "0 0 0px #000");
+		}
+		
+		function focusCountryModify()
+		{
+			$('#country_modify').css("box-shadow", "0 0 0px #000");
+		}
+		
+		function keyupRePassModify()
+		{
+			if($('#repass_modify').val() != null && $("#pass_modify").val() != null)
+			{
+				if($('#repass_modify').val() === $("#pass_modify").val())
+					$('#repass_modify').css("box-shadow", "0 0 10px green");
+				else
+					$('#repass_modify').css("box-shadow", "0 0 10px red");
+			}
+		}
+		
+		$(document).on('click','#buttonSubmit',function()
+		{
+			var emptyField = false; 
+			
+			if($('#email_modify').val() == "")
+			{
+				$('#email_modify').css("box-shadow", "0 0 10px red");
+				emptyField = true;
+			}
+			if($('#name_modify').val() == "")
+			{
+				$('#name_modify').css("box-shadow", "0 0 10px red");
+				emptyField = true;
+			}
+			if($('#country_modify').val() == "")
+			{
+				$('#country_modify').css("box-shadow", "0 0 10px red");
+				emptyField = true;
+			}
+			
+			if(!emptyField)
+			{
+				if($("#repass_modify").val() == $("#pass_modify").val())
+				{
+					clientRest.modifyUserLogged($('#email_modify').val(), $("#pass_modify").val(), $('#name_modify').val(), $('#country_modify').val(), user.getId());
+				}
+				else
+					$('#repass_modify').css("box-shadow", "0 0 10px red");
+			}
+		});
+		
+		/* --------------------------------------------------------------------------------------------------------- */
+		/* ------------------------------------------ FORM AMMINISTRATORE ------------------------------------------ */
+		/* --------------------------------------------------------------------------------------------------------- */
+		
+		function initAdminForm()
+		{	
+			var option = $(document.createElement('option'));
+			option.val(0);
+			option.text("");
+			$("#selectUsers").html("");
+			$("#selectUsers").append(option);
+			for(var i = 0; i < users.length; i++)
+			{
+				if(users[i].getType() !== 4)
+				{
+					option = $(document.createElement('option'));
+					option.val(users[i].getType());
+					option.attr("id",users[i].getEmail());
+					option.text(users[i].getName()+" - "+users[i].getEmail());
+					$("#selectUsers").append(option);
+				}
+			}
+			
+			$(document).on("change",'#selectUsers', function()
+			{	
+				$('#selectType').css("display","block");
+			    $('#selectType').val(this.value);
+			});
+		}
+		
+		$(document).on('click','#buttonSubmitFormAdmin',function()
+		{
+			if($('#selectUsers').children(":selected").attr("id") != undefined)
+			{
+				clientRest.modifyUserFromAdmin($('#selectType').val(), util.getIdUserByEmail(users, $('#selectUsers').children(":selected").attr("id")));
+			}
+		});
+		
+		function clickLogout()
+		{
+			deleteTemporaryData();
+			
+			models_notsaved = [];
+			modelinstances_notsaved = [];
+		}
+			
+	</script>
+	
+</body>
+
+</html>

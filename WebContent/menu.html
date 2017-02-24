@@ -1,0 +1,612 @@
+<!-- ResilienceDS
+Copyright (C) 2017 DISIT Lab http://www.disit.org - University of Florence
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>. -->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+	<meta charset="US-ASCII">
+	<title>Menu</title>
+		
+		<!-- Style CSS -->
+		<link rel="stylesheet" href="lib/jquery-ui/jquery-ui.css" type="text/css" media="screen" />
+		<link rel="stylesheet" href="css/menu/menu.css" type="text/css" media="screen" />
+	
+</head>
+
+<body>
+
+	<input type="button" id="button-menu" title="Hide navigation menu"></input>
+	<div id="menu-nav"></div>
+	
+	<script type="text/javascript">
+	
+		var menuOpened = true;
+	
+		jQuery(function($) {
+			
+			// Richiesta di tutti i modelli presenti sul server
+			clientRest.getListModels();
+		});
+		
+		function listModelDone()
+		{
+			// Richiesta di tutte le istanze presenti sul server
+			clientRest.getListModelInstances();
+			
+			if(user.getType() != 1)
+			{
+// 				intervalReloadInstance = setInterval(function(){ clientRest.getListStatusModelInstances(); }, 5000);
+			} 
+		}
+		
+		function createMenu() // PARAMETRI GLOBALI - modelinstances_db e models_db
+		{		
+// 			alert($('#menu-nav').attr("height"))
+// 			if($('#menu-nav').attr("height") > "500px")
+// 			{
+// 				$('#menu-nav').css("height","80vh");
+// 				$('#menu-nav').css("overflow-y","auto");
+// 			}
+			
+			$("#button-menu").click(function(){
+				if(menuOpened){
+					$("#menu-nav").slideUp("slow");
+					$("#button-menu").css('opacity',0.5);
+					$("#button-menu").attr("title","Show navigation menu");
+					menuOpened = false;
+				}
+				else{
+					$("#menu-nav").slideDown("slow");
+					$("#button-menu").css('opacity',1.0);
+					$("#button-menu").attr("title","Hide navigation menu");
+					menuOpened = true;
+				}  
+			});
+			
+			var buttonModel = null;
+			var buttonInstance = null;
+			
+			// Vettore dei modelli nel db creati dall'utente all'inizio del vettore e vettore dei modelli nel db degli altri utenti
+			var models_db_userFirst = new Array();
+			var models_db_otherUsers = new Array();
+			for(var i = 0; i < models_db.length; i++)
+			{
+				if(models_db[i].getUserId() == user.getId())
+					models_db_userFirst.push(models_db[i]);
+				else
+					models_db_otherUsers.push(models_db[i]);
+			} 
+			
+			// Shift dei modelli tmp creati dall'utente all'inizio del vettore e vettore dei modelli tmp degli altri utenti
+			var models_tmp_userFirst = new Array();
+			var models_tmp_otherUsers = new Array();
+			for(var i = 0; i < models_tmp.length; i++)
+			{
+				if(models_tmp[i].getUserId() == user.getId())
+					models_tmp_userFirst.push(models_tmp[i]);
+				else
+					models_tmp_otherUsers.push(models_tmp[i]);
+			}	
+			
+			// Controllo se l'utente ha i permessi necessari per creare un nuovo modello
+			if(user.getPermitModelValue(1) === "true") // DA MODIFICARE - EFFETTUARE QUERY DB
+			{
+				buttonModel = createLiModel("Add New Model", 0, 0);
+				$('#menu-nav').append(buttonModel);
+			}
+			
+			buildModelsTmpMenu(models_tmp_userFirst);
+			buildModelsDBMenu(models_db_userFirst);
+			buildModelsTmpMenu(models_tmp_otherUsers);
+			buildModelsDBMenu(models_db_otherUsers);
+			
+			loadingFinished() // Eliminazione del loading - funzione in home.jsp
+		}
+		
+		// Creazione del button per i modelli
+		function createLiModel(text, id, id_user)
+		{
+			var button = $(document.createElement('div'));
+			button.attr("id", 'buttonModel_'+id);
+			button.attr("title","Pulsante n.ro: "+id);
+			if(id == 0)
+				button.attr("class", "new-model btn");
+			else{
+				if(id_user == user.getId())
+				{
+// 					button.attr("title","Visualize your model: " + text);
+					button.attr("class", "user-logged-model btn");
+				}
+				else{
+// 					button.attr("title","Visualize model: " + text);
+					button.attr("class", "user-undefined-model btn");
+				}
+			}
+			button.click(function(){ //Changes the model/the page.
+				$('#menu-nav').children().css("box-shadow","inset 0 1px 1px rgba(255,255,255,0.5);").removeClass("btn-selected");
+				if(id_user == user.getId())
+					button.attr("class","btn-selected user-logged-model btn");
+				else
+					button.attr("class","btn-selected user-undefined-model btn");
+				if(models_notsaved.length>0) modelnotsaved_update();// If necessary saves the model not saved.
+				if(id != 0)
+				{
+					modelId = id;
+					console.log("Id modello: "+ id);
+					$(".loading").fadeOut("slow");
+					openLink("visualize_model.jsp",'section');
+				}
+				else{
+					$(".loading").fadeOut("slow");
+					openLink("new_FRAMmodel.jsp",'section');
+				}
+				
+				// Codice aggiuntivo	
+// 				button.append($('<div id="container-menu-op">').load('menu_operations.html', function(){
+// 					setPosition(button.position());
+// 				}));
+			});
+			
+			var textButton = $(document.createElement('label'));
+			textButton.attr("class","btn-text-model");
+			if(id == 0)
+				textButton.text(text);
+			else
+				textButton.text("Model: "+text);
+			
+			button.append(textButton);	
+			return button;
+		}
+		
+		// Creazione del button per le istanze dei modelli
+		function createLiInstance(text, id, id_model, id_user)
+		{
+			var button = $(document.createElement('div'));
+			button.attr("id", "buttonInstance_"+id+"_"+id_model);
+			button.attr("title", "Pulsante n.ro: "+id+ "_"+id_model);
+			button.val(id_model);
+			if(id == 0){
+// 				if(util.getIndexById(models_db, id_model) != -1)
+// 					button.attr("title","Add new process of model: " + models_db[util.getIndexById(models_db, id_model)].getObjective());
+// 				else if(util.getIndexById(models_tmp, id_model) != -1)
+// 					button.attr("title","Add new process of model:" + models_tmp[util.getIndexById(models_tmp, id_model)].getObjective());
+// 				else
+// 					button.attr("title","Add new process");
+				button.attr("class", "new-instance btn");
+			}
+			else{
+				if(id_user == user.getId())
+				{
+// 					button.attr("title","Visualize your process: " + text);
+					button.attr("class", "user-logged-instance btn");
+				}
+				else{
+// 					button.attr("title","Visualize process: " + text);
+					button.attr("class", "user-undefined-instance btn");
+				}	
+			}
+				
+			button.click(function(){
+				$('#menu-nav').children().css("box-shadow","inset 0 1px 1px rgba(255,255,255,0.5);").removeClass("btn-selected");
+				if(id_user == user.getId())
+					button.attr("class", "btn-selected user-logged-instance btn");
+				else
+					button.attr("class", "btn-selected user-undefined-instance btn");
+				
+				modelId = id_model;
+				if(id != 0)
+				{
+					modelInstanceId = id;
+					openLink("visualize_instance.jsp",'section');
+				}
+				else{
+					$(".loading").fadeOut("slow");
+					openLink("new_FRAMinstance.jsp",'section');
+					// openLink("new_instance.jsp",'section'); //XXX OLD
+				}
+				
+// 				alert(modelId + " " + modelInstanceId);
+			});
+			
+			var textButton = $(document.createElement('label'));
+			textButton.attr("class","btn-text-instance");
+			
+			if(id == 0)
+				textButton.text(text);
+			else
+				textButton.text("Process:"+text);
+			
+			button.append(textButton);
+			
+			return button;
+		}
+		
+		function createImgSave(id, id_model, isShowed)
+		{	
+			var img = $(document.createElement('img'));
+	 		img.attr("src","image/menu-sub/save.png");
+	 		img.attr("class","imgsave-on-button");
+	 		if(id_model != 0)
+	 			img.attr("id","imgsave_"+id+"_"+id_model);
+	 		else
+	 			img.attr("id","imgsave_"+id);
+	 		img.css("float","right");
+	 		if(id_model != 0)
+	 		{
+	 			if(util.getIndexById(modelinstances_notsaved, id) != -1)
+	 				img.css("display","block");
+	 			else
+	 				img.css("display","none");
+	 		}
+	 		else{
+	 			if(util.getIndexById(models_notsaved, id) != -1)
+	 				img.css("display","block");
+	 			else
+	 				img.css("display","none");
+	 		}
+	 		img.attr("width",16);
+	 		img.attr("height",16);
+	 		img.on('mouseover',function() {
+	 			if(id_model != 0)
+		 			$("#buttonInstance_"+id+"_"+id_model).off("click");
+		 		else
+		 			$("#buttonModel_"+id).off("click");
+	 		});
+	 		
+	 		img.on('mouseout',function(){
+	 			if(id_model == 0)
+	 			{
+	 				$("#buttonModel_"+id).on("click", function(){
+	 					//Selects the button clicked.
+	 					$('#menu-nav').children().css("box-shadow","inset 0 1px 1px rgba(255,255,255,0.5);").removeClass("btn-selected");
+	 					if(id_user == user.getId())
+	 						this.className = "btn-selected user-logged-model btn";
+	 					else
+	 						this.className = "btn-selected user-undefined-model btn";
+	 					//Opens the model.
+	 					if(id != 0)
+	 					{
+	 						modelId = id;
+	 						console.log("Id modello: "+ id);
+	 						$(".loading").fadeOut("slow");
+	 						openLink("visualize_model.jsp",'section');
+	 					}
+	 					else{
+	 						$(".loading").fadeOut("slow");
+	 						openLink("new_FRAMmodel.jsp",'section');
+	 					}
+	 				});	
+	 			}
+	 			else{
+	 				$("#buttonInstance_"+id+"_"+id_model).on("click", function(){
+		 				modelId = id_model;		 				
+		 				//Selects the button clicked.
+	 					$('#menu-nav').children().css("box-shadow","inset 0 1px 1px rgba(255,255,255,0.5);").removeClass("btn-selected");
+	 					if(id_user == user.getId())
+	 						this.className = "btn-selected user-logged-instance btn";
+	 					else
+	 						this.className = "btn-selected user-undefined-instance btn";
+						// Opens the instance.
+	 					if(id != 0)
+						{
+							modelInstanceId = id;
+							openLink("visualize_instance.jsp",'section');
+						}
+						else{
+							$(".loading").fadeOut("slow");
+							openLink("new_FRAMinstance.jsp",'section');
+							// openLink("new_instance.jsp",'section'); //XXX OLD
+						}
+	 				});
+	 			}
+	 			
+	 		});
+	 		
+	 		img.on("click",function(){
+	 			if(id_model == 0){
+	 				console.log("Save the model.");
+	 				// TODO Asks for save as new model.
+	 				// Checks if there are instances not saved for the currentModel.
+	 				var i_list = util.getInstanceIdByModelId(modelinstances_notsaved, id); 
+	 				if(i_list.length > 0){
+	 					var t = confirm("This operation will delete the model's instances not saved. Proceed with save? ");
+	 					if(t){
+			 				for(i = i_list.length; i > 0; i--){ // Removes the instances.
+			 					$(".user-logged-instance #imgsave_"+modelinstances_notsaved[i_list[i-1]].getId()+"_"+modelinstances_notsaved[i_list[i-1]].getModelId()).css("display","none"); 
+			 					modelinstances_notsaved.splice(i_list[i-1],1);
+			 				}
+	 						clientRest.saveFRAMModel(id);	
+	 					} 
+	 				}
+	 				else clientRest.saveFRAMModel(id); 				
+	 			}	 				
+	 			else{	 	
+	 				console.log("Save the instances.");
+	 				clientRest.saveFRAMModelInstance(id, id_model);
+	 			}
+	 		});
+	 		
+	 		return img;
+		}
+		
+		function createImgStatusInstance(id, id_model, status)
+		{
+			var img = $(document.createElement('img'));
+			
+			if(user.getType() != 1)
+			{
+				img.attr("class","imgstatus-on-button");
+				if(status == 0){
+					img.attr("src","image/menu/grey_point.png");
+				}
+				else if(status == 1){
+					img.attr("src","image/menu/yellow_point.png");
+				}	
+				else if(status == 2){
+					img.attr("src","image/menu/green_point.png");
+				}	
+				else if(status == 3){
+					img.attr("src","image/menu/red_point.png");
+				}	
+				
+		 		img.attr("id","imgstatus_"+id+"_"+id_model);
+		 		img.css("float","right");
+		 		img.attr("width",16);
+		 		img.attr("height",16);	
+			}
+	 		
+	 		return img;
+		}
+		
+		function buildModelsDBMenu(models_db_generic)
+		{
+			// Orders the model by the date of the last modify.
+			models_db_generic.sort(function(a,b){return a.getDateLastModify() < b.getDateLastModify();}); //Sorts the models by the date of the last modify.
+			//Lista modelli sul DB dell'utente loggato
+			for(var i = 0; i < models_db_generic.length; i++)
+			{
+				buttonModel = createLiModel(models_db_generic[i].getObjective(), models_db_generic[i].getId(), models_db_generic[i].getUserId());
+				buttonModel.append(createImgSave(models_db_generic[i].getId(), 0, false));
+				$('#menu-nav').append(buttonModel);
+				
+				// Lista istanze sul DB 
+				for(var j = 0; j < modelinstances_db.length; j++)
+				{
+					if(modelinstances_db[j].getModelId() == models_db_generic[i].getId())
+					{
+						buttonInstance = createLiInstance(modelinstances_db[j].getSpecificObjective(), modelinstances_db[j].getId(), modelinstances_db[j].getModelId(), modelinstances_db[j].getUserId());
+						// buttonInstance.append(createImgStatusInstance(modelinstances_db[j].getId(), modelinstances_db[j].getModelId(), modelinstances_db[j].getStatus()));
+						buttonInstance.append(createImgSave(modelinstances_db[j].getId(), modelinstances_db[j].getModelId(), false));
+						$('#menu-nav').append(buttonInstance);	
+					}
+				}
+				// Lista istanze temporanee
+				for(var j = 0; j < modelinstances_tmp.length; j++)
+				{
+					if(modelinstances_tmp[j].getModelId() == models_db_generic[i].getId())
+					{
+						buttonInstance = createLiInstance(modelinstances_tmp[j].getSpecificObjective(), modelinstances_tmp[j].getId(), modelinstances_tmp[j].getModelId(), modelinstances_tmp[j].getUserId());
+						// buttonInstance.append(createImgStatusInstance(modelinstances_tmp[j].getId(), modelinstances_tmp[j].getModelId(), modelinstances_tmp[j].getStatus()));
+						buttonInstance.append(createImgSave(modelinstances_tmp[j].getId(), modelinstances_tmp[j].getModelId(), true));
+						$('#menu-nav').append(buttonInstance);
+					}
+				}
+					
+				// Controllo se l'utente ha i permessi necessari per creare una nuova istanza
+				if(user.getPermitModelValue(1) === "true") // DA MODIFICARE - EFFETTUARE QUERY DB
+				{
+					// Controllo se l'utente loggato e' il proprietario del modello su cui abilitare la creazione di una nuova istanza
+					if(models_db_generic[i].getUserId() == user.getId())
+					{
+						buttonInstance = createLiInstance("Add New Instance", 0, models_db_generic[i].getId(), 0);
+						$('#menu-nav').append(buttonInstance);
+					}
+				}
+			}
+		}
+		
+		function buildModelsTmpMenu(models_tmp_generic)
+		{
+			// Lista modelli temporanei
+			for(var i = 0; i < models_tmp_generic.length; i++)
+			{
+				buttonModel = createLiModel(models_tmp_generic[i].getObjective(), models_tmp_generic[i].getId(), models_tmp_generic[i].getUserId());
+				buttonModel.append(createImgSave(models_tmp_generic[i].getId(), 0, true));
+				
+				console.log("Id modello tmp: " + models_tmp_generic[i].getId());
+				console.log($('#imgsave_' + models_tmp_generic[i].getId()).length > 0);
+				
+				$('#menu-nav').append(buttonModel);
+				
+				// Lista istanze temporanee
+				for(var j = 0; j < modelinstances_tmp.length; j++)
+				{
+					if(modelinstances_tmp[j].getModelId() == models_tmp_generic[i].getId())
+					{
+						buttonInstance = createLiInstance(modelinstances_tmp[j].getSpecificObjective(), modelinstances_tmp[j].getId(), modelinstances_tmp[j].getModelId(), modelinstances_tmp[j].getUserId());
+						// buttonInstance.append(createImgStatusInstance(modelinstances_tmp[j].getId(), modelinstances_tmp[j].getModelId(), modelinstances_tmp[j].getStatus()));
+						buttonInstance.append(createImgSave(modelinstances_tmp[j].getId(), modelinstances_tmp[j].getModelId(), true));
+						$('#menu-nav').append(buttonInstance);
+					}
+				}
+				
+				// Controllo se l'utente ha i permessi necessari per creare una nuova istanza
+				if(user.getPermitModelValue(1) === "true") // DA MODIFICARE - EFFETTUARE QUERY DB
+				{					
+					buttonInstance = createLiInstance("Add New Instance", 0, models_tmp_generic[i].getId(), 0);
+					$('#menu-nav').append(buttonInstance);
+				}
+			}
+		}
+		
+		// Update del menu quando si clicca su nuovo modello
+		function updateMenuModel()
+		{
+			$('#menu-nav').empty();
+			
+			createMenu();
+		}
+
+		function updateMenuNav()
+		{
+			$('#menu-nav').empty();
+			
+			createMenu();
+		}
+		
+		function updateDateLastModify(new_date){
+			$('#dateLastModifyInfo').text(new_date);
+		}
+		
+		// Gestione grafica del cambio di descrizione del modello da pannello di info
+		function updateMenuNameModel(nameModel, idModel)
+		{
+			if($('#buttonModel_'+idModel).length > 0)
+			{
+				$('#buttonModel_'+idModel).html(nameModel); 
+			
+				if(util.getIndexById(models_tmp, idModel) > -1)
+					$('#buttonModel_'+idModel).append(createImgSave(models_tmp[util.getIndexById(models_tmp, idModel)].getId(), 0));
+				else
+					$('#buttonModel_'+idModel).append(createImgSave(models_db[util.getIndexById(models_db, idModel)].getId(), 0));
+			}
+		}
+		
+		// Gestione grafica del cambio di descrizione del criterio del nodo radice nel modello - cambiando quella cambia anche il nome del modello
+		function updateMenuCriteriaModel(textModel, idModel)
+		{
+			if($('#buttonModel_'+idModel).length > 0)
+			{
+				$('#buttonModel_'+idModel).html("Model: "+textModel); 
+				
+				if(util.getIndexById(models_tmp, idModel) > -1)
+					$('#buttonModel_'+idModel).append(createImgSave(models_tmp[util.getIndexById(models_tmp, idModel)].getId(), 0));
+				else
+					$('#buttonModel_'+idModel).append(createImgSave(models_db[util.getIndexById(models_db, idModel)].getId(), 0));
+				
+				if(util.getIndexById(models_db, idModel) > -1)
+					models_db[util.getIndexById(models_db, idModel)].setObjective(textModel);
+				else if(util.getIndexById(models_tmp, idModel) > -1)
+					models_tmp[util.getIndexById(models_tmp, idModel)].setObjective(textModel);
+			}
+		}
+		
+		// Gestione grafica del cambio di nome dell'istanza selezionata
+		// Graphics managment when a instance's name change.
+		function updateMenuNameInstance(textInstance, idModel, idModelInstance)
+		{	
+			console.log(textInstance + " " + idModelInstance + "_" + idModel);			
+			if($("#buttonInstance_"+idModelInstance+"_"+idModel).length > 0)
+			{
+				$("#buttonInstance_"+idModelInstance+"_"+idModel).html("Process: " + textInstance); 
+				
+				if(util.getIndexById(modelinstances_tmp, idModelInstance) > -1)
+				{
+					// $("#buttonInstance_"+idModelInstance+"_"+idModel).append(createImgStatusInstance(idModelInstance, idModel, modelinstances_tmp[util.getIndexById(modelinstances_tmp, idModelInstance)].getStatus()));
+					$("#buttonInstance_"+idModelInstance+"_"+idModel).append(createImgSave(idModelInstance, idModel));
+				}
+				else{
+					// $("#buttonInstance_"+idModelInstance+"_"+idModel).append(createImgStatusInstance(idModelInstance, idModel, modelinstances_db[util.getIndexById(modelinstances_db, idModelInstance)].getStatus()));
+					$("#buttonInstance_"+idModelInstance+"_"+idModel).append(createImgSave(idModelInstance, idModel));
+				}	
+				
+				if(util.getIndexById(modelinstances_notsaved, idModelInstance) > -1)
+					$("#imgsave_"+idModelInstance+"_"+idModel).show();
+			}
+		}
+		
+		
+		function refreshStatusInstances()
+		{	
+			for(var i = 0; i < modelinstances_db.length; i++)
+			{
+				if(modelinstances_db[i].getStatus() == 0)
+					$("#imgstatus_" + modelinstances_db[i].getId() + "_" + modelinstances_db[i].getModelId()).attr("src","image/menu/grey_point.png");				
+				else if(modelinstances_db[i].getStatus() == 1)
+					$("#imgstatus_" + modelinstances_db[i].getId() + "_" + modelinstances_db[i].getModelId()).attr("src","image/menu/yellow_point.png");
+				else if(modelinstances_db[i].getStatus() == 2)
+					$("#imgstatus_" + modelinstances_db[i].getId() + "_" + modelinstances_db[i].getModelId()).attr("src","image/menu/green_point.png");
+				else if(modelinstances_db[i].getStatus() == 3)
+					$("#imgstatus_" + modelinstances_db[i].getId() + "_" + modelinstances_db[i].getModelId()).attr("src","image/menu/red_point.png");
+			}
+			
+			for(var i = 0; i < modelinstances_tmp.length; i++)
+			{
+				if(modelinstances_tmp[i].getStatus() == 0)
+					$("#imgstatus_" + modelinstances_tmp[i].getId() + "_" + modelinstances_tmp[i].getModelId()).attr("src","image/menu/grey_point.png");
+				else if(modelinstances_tmp[i].getStatus() == 1)
+					$("#imgstatus_" + modelinstances_tmp[i].getId() + "_" + modelinstances_tmp[i].getModelId()).attr("src","image/menu/yellow_point.png");
+				else if(modelinstances_tmp[i].getStatus() == 2)
+					$("#imgstatus_" + modelinstances_tmp[i].getId() + "_" + modelinstances_tmp[i].getModelId()).attr("src","image/menu/green_point.png");
+				else if(modelinstances_tmp[i].getStatus() == 3)
+					$("#imgstatus_" + modelinstances_tmp[i].getId() + "_" + modelinstances_tmp[i].getModelId()).attr("src","image/menu/red_point.png");
+			}
+		}
+		
+		function showSaveIconModel(){
+			$('#imgsave_'+modelId).show();
+		}
+		
+		function hideSaveIconModel(){
+			$('#imgsave_'+modelId).css("display","none");
+		}
+		
+		function showSaveIconInstance(){
+			$('#imgsave_'+modelInstanceId+"_"+modelId).show();
+		}
+		
+		function hideSaveIconInstance(){
+			$('#imgsave_'+modelInstanceId+"_"+modelId).css("display","none");
+		}
+		
+		function saveModel()
+		{			
+			$('#imgsave_'+modelId).css("display","none");	
+		}
+		
+		function saveInstance()
+		{		
+			$('#imgsave_'+modelId).css("display","none");
+			$('#imgsave_'+modelInstanceId+"_"+modelId).css("display","none");
+		}
+		
+		function selectButtonModel(id, instance){
+			$('#menu-nav').children().css("box-shadow","inset 0 1px 1px rgba(255,255,255,0.5);").removeClass("btn-selected");
+			if(!instance){				
+				var button = $("#buttonModel_"+id);
+				if(button.length==0) { console.log("WARNING - No Button FIND"); return;}
+				if(id_user == user.getId())
+					button.attr("class","btn-selected user-logged-model btn");
+				else
+					button.attr("class","btn-selected user-undefined-model btn");
+			}
+			else{				
+				var button = $("#buttonInstance_"+id+"_"+modelId); //XXX Check the modelId in the case of a new instance..
+				if(button.length==0){ console.log("WARNING - No Button FIND"); return;}
+				if(id_user == user.getId())
+					button.attr("class","btn-selected user-logged-instance btn");
+				else
+					button.attr("class","btn-selected user-undefined-instance btn");
+			}
+		}
+				
+	</script>
+
+</body>
+
+</html>

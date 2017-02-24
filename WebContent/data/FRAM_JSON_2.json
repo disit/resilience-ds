@@ -1,0 +1,43 @@
+{
+	"FMV_VERSION": "0,0,2,0",
+	"Functions": [{
+		"idF": 1,
+		"name": "Discharge patient",
+		"fnStyle": 0,
+		"Tp": -1,
+		"Pp": -1,
+		"FunctionType": 0,
+		"x": 135,
+		"y": 224
+
+	},{
+		"idF": 2,
+		"name": "Receive patient in nursing home",
+		"fnStyle": 0,
+		"Tp": -1,
+		"Pp": -1,
+		"FunctionType": 0,
+		"x": 372,
+		"y": 222
+
+	}],
+	"Aspects": [{
+		"idA": 1,
+		"label": "Not described",
+		"target": 1,
+		"source": null,
+		"type": "input"
+	}, {
+		"idA": 2,
+		"label": "Epicrisis",
+		"target": null,
+		"source": 1,
+		"type": "output"
+	}, {
+		"idA": 3,
+		"label": "Patient discharged",
+		"target": 2,
+		"source": 1,
+		"type": "input"
+	}]
+}

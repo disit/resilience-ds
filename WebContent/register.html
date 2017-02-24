@@ -1,0 +1,191 @@
+<!-- ResilienceDS
+Copyright (C) 2017 DISIT Lab http://www.disit.org - University of Florence
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>. -->
+
+<!DOCTYPE html>
+<html>
+<head>
+
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+	<title>Register SmartDS</title>
+	<link rel="stylesheet" type="text/css" href="css/register/style.css"/>
+	
+	<script type="text/javascript" src="lib/jquery/jquery-1.11.2.min.js"></script>
+
+	
+	<script type="text/javascript" src="lib/toastr/toastr.min.js"></script>
+	<link rel="stylesheet" href="lib/toastr/toastr.min.css" type="text/css" media="screen" />
+</head>
+
+<body>
+
+	<div id="wrapper">
+	
+	<form name="register-form" class="register-form" id="register-form" action="register" method="post">
+	
+	    <div class="header">
+	    	<h1>Register User</h1>
+	    	<span>Insert all field to register the user.</span>
+	    </div>
+	
+	    <div class="content">
+	    	<p><label for="email">Email</label>
+	    	<input name="email" id="email" type="text" class="input username" onfocus="focusEmail()" /></p>
+	    	<p><label for="pass">Password</label>
+	    	<input name="pass" id="pass" type="password" class="input password" onfocus="focusPass()" /></p>
+	    	<p><label for="repass">Re-Pass</label>
+	    	<input name="repass" id="repass" type="password" class="input password" onkeyup="samePassword()" onfocus="focusRepass()"/></p>
+	    	<p><label for="name">Name</label>
+	    	<input name="name" id="name" type="text" class="input name" onfocus="focusName()" /></p>
+	    	<p><label for="country">Country</label>
+	    	<input name="country" id="country" type="text" class="input country" onfocus="focusCountry()" /></p>
+	    	<br>
+	    	<span id="errorMsg" style="display:none;color:red"></span>
+	    	<span id="confirmMsg" style="display:none;color:blue"></span>
+	    	<input name="typeRegister" id="typeRegister" value="external" style="display:none"></input>
+	    </div>
+	
+	    <div class="footer">
+	    	<input type="button" name="reset" value="Reset" class="button" onclick="resetFields()"/>
+			<input type="submit" value="Register" class="button"/>
+	    	<input type="button" name="submit" value="Login" class="login" onclick="clickLogin()"/>
+	    </div>
+	
+	</form>
+	
+	</div>
+	
+	<div class="gradient"></div>
+	
+	<script type="text/javascript">
+		
+		function warningNoRegistration()
+		{
+			$('#errorMsg').text("Registration error. Try again...");
+			$('#errorMsg').show();
+		}
+		
+		function warningEmailFounded()
+		{
+			$('#errorMsg').text("Email user already used! Please change email...");
+			$('#errorMsg').show();
+		}
+		
+		function registrationComplete()
+		{
+			location.href = 'login.html';
+		}
+	
+		function focusEmail()
+		{
+			$('#email').css("box-shadow", "inset 0 1px 2px #000");
+		}
+	
+		function focusPass()
+		{
+			$('#pass').css("box-shadow", "inset 0 1px 2px #000");
+		}
+		
+		function focusRepass()
+		{
+			$('#repass').css("box-shadow", "inset 0 1px 2px #000");
+		}
+		
+		function focusName()
+		{
+			$('#name').css("box-shadow", "inset 0 1px 2px #000");
+		}
+		
+		function focusCountry()
+		{
+			$('#country').css("box-shadow", "inset 0 1px 2px #000");
+		}
+	
+		$('#register-form').submit(function()
+		{
+			var emptyField = false; 
+			
+			if($('#email').val() == "")
+			{
+				$('#email').css("box-shadow", "inset 0 1px 10px red");
+				emptyField = true;
+			}
+			if($('#pass').val() == "")
+			{
+				$('#pass').css("box-shadow", "inset 0 1px 10px red");
+				emptyField = true;
+			}
+			if($('#repass').val() == "")
+			{
+				$('#repass').css("box-shadow", "inset 0 1px 10px red");
+				emptyField = true;
+			}
+			if($('#name').val() == "")
+			{
+				$('#name').css("box-shadow", "inset 0 1px 10px red");
+				emptyField = true;
+			}
+			if($('#country').val() == "")
+			{
+				$('#country').css("box-shadow", "inset 0 1px 10px red");
+				emptyField = true;
+			}
+			
+			if(!emptyField)
+			{
+				if($("#repass").val() == $("#pass").val())
+					return true;
+				else
+					$('#repass').css("box-shadow", "inset 0 1px 10px red");
+			}
+			return false;
+		});
+		
+		
+		function clickLogin()
+		{
+			location.href='login.html';
+		}
+		
+		function samePassword()
+		{
+			if(document.getElementById("repass").value != null && document.getElementById("pass").value != null)
+			{
+				if(document.getElementById("repass").value === document.getElementById("pass").value)
+					$('#repass').css("box-shadow", "inset 0 1px 10px green");
+				else
+					$('#repass').css("box-shadow", "inset 0 1px 10px red");
+			}
+		}
+		
+		function resetFields()
+		{
+			$("email").val("");
+			$("pass").val(""); 
+			$("repass").val("");
+			$("name").val("");
+			$("country").val("");
+			
+			$('#email').css("box-shadow", "inset 0 1px 2px #000");
+			$('#pass').css("box-shadow", "inset 0 1px 2px #000");
+			$('#repass').css("box-shadow", "inset 0 1px 2px #000");
+			$('#name').css("box-shadow", "inset 0 1px 2px #000");
+			$('#country').css("box-shadow", "inset 0 1px 2px #000");
+		}
+		
+	</script>
+
+</body>
+</html>

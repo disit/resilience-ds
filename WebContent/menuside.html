@@ -1,0 +1,279 @@
+<!-- ResilienceDS
+Copyright (C) 2017 DISIT Lab http://www.disit.org - University of Florence
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>. -->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="ISO-8859-1">
+	<title>Menu side</title>
+	
+	<link rel="stylesheet" href="css/menu/menuside.css" type="text/css" media="screen" />
+	
+</head>
+
+<body>
+
+	<div id="buttons-side">
+	
+		<!-- <button id="help" type="button" class="button-side" onclick="help()" title="Help"></button> -->
+		<button id="fullscreen" type="button" class="button-side fullscreen-in" onclick="fullscreen()" title="Fullscreen"></button> 
+		<button id="recenter" type="button" class="button-side" onclick="recenter()" title="Re-Center"></button>
+		<!--   <button id="rotate" type="button" class="button-side" onclick="rotate()" title="Rotate"></button>-->
+		<button id="zoomin" type="button" class="button-side" onclick="zoomIn()" title="Zoom In"></button>
+		<button id="zoomreset" type="button" class="button-side" onclick="zoomReset()" title="Zoom Reset"></button>
+		<button id="zoomout" type="button" class="button-side" onclick="zoomOut()" title="Zoom Out"></button>
+		<button id="print" type="button" class="button-side" onclick="print()" title="Print"></button>
+		<button id="hideAspects" type="button" class="button-side" onclick="hideAspects()" title="Hide/Show"></button>
+	
+	</div>
+
+	<script type="text/javascript">
+	
+		jQuery(function($) {		
+			$(document).keyup(function(e) {
+				if (e.keyCode == 27) //esc
+					$('#fullscreen').attr("class","button-side fullscreen-in");   
+			});
+		});
+		
+		function help() //TODO XXX Implement this functions and uncomment the button above.
+		{
+			url = 'http://www.google.it';
+			window.open(url, '_blank');
+			window.focus();
+		}
+		
+		function fullscreen()
+		{
+			var fullscreenEnabled = document.fullscreenEnabled || document.mozFullScreenEnabled || document.webkitFullscreenEnabled;
+			
+			if(fullscreenEnabled)
+			{
+				var fullscreenElement = document.fullscreenElement || document.mozFullScreenElement || document.webkitFullscreenElement;
+			
+				if(fullscreenElement == null)
+				{
+					var element = document.documentElement;
+					
+					if(element.requestFullscreen) 
+						element.requestFullscreen();
+					else if(element.mozRequestFullScreen) 
+						element.mozRequestFullScreen();
+					else if(element.webkitRequestFullscreen) 
+						element.webkitRequestFullscreen();
+					else if(element.msRequestFullscreen) 
+						element.msRequestFullscreen();	
+					
+					$('#fullscreen').attr("class","button-side fullscreen-out");
+				}
+				else{
+					// Exit fullscreen
+					if(document.exitFullscreen) 
+						document.exitFullscreen();
+					else if(document.mozCancelFullScreen) 
+						document.mozCancelFullScreen();
+				    else if(document.webkitExitFullscreen) 
+						document.webkitExitFullscreen();
+					
+					$('#fullscreen').attr("class","button-side fullscreen-in");
+				}
+			}
+			else{
+	 			if($('#nav').css("display") == "block"){
+					$('#nav').css("display","none");
+					$('#fullscreen').attr("class","button-side fullscreen-out");
+	 			}
+				else if($('#nav').css("display") == "none"){
+					$('#nav').show("slow");
+					$('#fullscreen').attr("class","button-side fullscreen-in");
+				}	
+			}	
+		}
+		
+		function recenter() //Ale: Function in zoom.js.
+		{
+			positionReset();
+		}
+		
+		function rotate()
+		{	
+			if(type_rotate == "vertical")
+			{
+				type_rotate = "horizontal";
+				
+				if($('#model_body').length > 0)
+					openLink('visualize_model.jsp','section');
+				if($('#instance_body').length > 0)
+					openLink('visualize_instance.jsp','section');
+			}
+			else{
+				type_rotate = "vertical";
+				
+				if($('#model_body').length > 0)
+					openLink('visualize_model.jsp','section');
+				if($('#instance_body').length > 0)
+					openLink('visualize_instance.jsp','section');			
+			}
+		}
+		
+// 		function rotate_old()
+// 		{	
+// 			if((n_rotate%2) == 0)
+// 			{
+				
+// 				node.each(function(d,i){
+// 					$('#gnode_'+getId(d.position)).attr("transform","translate(" +d.y+ "," +(-d.x)+ ") rotate(-90)");
+// 				});
+			      
+// 			    diagonal = d3.svg.diagonal()
+// 					.source(function(d) { return {"x":d.source.x+(width_node/2), "y":d.source.y+height_node}; })            
+// 					.target(function(d) { return {"x":d.target.x+(width_node/2), "y":d.target.y}; })
+// 					.projection(function(d) { return [d.y, -d.x]; });
+			    
+// 			    link.transition()
+// 			      .duration(duration)
+// 			      .attr("d", diagonal);
+			    
+// 			    if($('#instance_body').length > 0)
+// 			    {
+// 			    	svg_body.selectAll("text.link-label").each(function(d,i){
+// 			    		$('#linklabel_'+getId(d.target.position)).attr("transform","translate(" +(height_node/2)+ "," +(-width_node/2)+ ") rotate(-90)");
+// 				    });
+// 			    }
+// 			}
+// 			else{
+// 				node.each(function(d,i){
+// 					$('#gnode_'+getId(d.position)).attr("transform","translate(" +d.x+ "," +d.y+ ") rotate(0)");
+// 				});
+			      
+// 				diagonal = d3.svg.diagonal()
+// 				.source(function(d) { return {"x":d.source.x+(width_node/2), "y":(d.source.y+height_node)}; })            
+// 				.target(function(d) { return {"x":(d.target.x+(width_node/2)), "y":d.target.y}; })
+// 				.projection(function(d) { return [d.x, d.y]; });
+			    
+// 			    link.transition()
+// 			      .duration(duration)
+// 			      .attr("d", diagonal);
+			    
+// 			    if($('#instance_body').length > 0)
+// 			    {
+// 			    	svg_body.selectAll("text.link-label").each(function(d,i){
+// 				    	$('#linklabel_'+getId(d.target.position)).attr("transform","translate(" +(width_node/2)+ "," +(height_node/2)+ ") rotate(0)");
+// 				    });
+// 			    }
+// 			}
+// 			n_rotate += 1;
+// 		}
+		
+		function zoomIn() 
+		{
+			zoomClick(1);
+		}
+				
+		function zoomReset() 
+		{
+			zoomClickReset();
+		}
+		
+		function zoomOut() 
+		{
+			zoomClick(-1);
+		}
+		
+		function print()
+		{
+			var divContents;
+			var windowTitle;
+			var cssImport;
+			
+			if($("#model_body").length > 0)
+			{
+				divContents = $("#model_body").html();
+				windowTitle = "Print Model";
+				cssImport = '<link rel="stylesheet" type="text/css" href="css/model.css"><link rel="stylesheet" type="text/css" href="css/fram.css">';
+			}
+				
+			if($("#instance_body").length > 0)
+			{	
+				divContents = $("#instance_body").html();
+				windowTitle = "Print Instance";
+				cssImport = '<link rel="stylesheet" type="text/css" href="css/instance.css">';
+			}
+				
+			var printWindow = window.open('', '', 'height=600,width=1000');
+            printWindow.document.write('<html><head><title>'+windowTitle+'</title>');     
+            printWindow.document.write(cssImport);
+            printWindow.document.write('</head><body>');
+            printWindow.document.write(divContents);
+            printWindow.document.write('</body></html>');
+            printWindow.document.close();
+            printWindow.print();
+		}
+		
+		function hideAspects(){//Hides/Shows the aspects.
+			var buttonOn = $("#showAspects");
+			
+			if(buttonOn.length>0) hideAllAspects(false);
+			else hideAllAspects(true);
+			
+		}
+		
+		function hideAllAspects(hide){
+			var DisplayAspects = $("g.LT");
+			if(!hide){
+				DisplayAspects.css("display","inherit");
+				$("#showAspects").attr("id","hideAspects");
+				HideAspects = false;
+			}
+			else{
+				DisplayAspects.css("display", "none");				
+				$("#hideAspects").attr("id","showAspects");
+				HideAspects = true;
+			}
+			console.log("Display aspect? " + DisplayAspects.css("display"));
+		}
+		
+		function visualizeMenuside() {
+			$('#menu-side').show("slow");
+			resetMenuside();
+		}
+
+		function menusideOff() {
+			$('menu-side').css("display", "none");
+		}
+
+		function rotateOn() {
+			$("#rotate").attr('disabled', false).css('opacity', 1);
+			$("#rotate").attr("title", "Rotate");
+		}
+
+		function rotateOff() {
+			$("#rotate").attr('disabled', 'disabled').css('opacity', 0.5);
+			$("#rotate").attr("title",
+					"Rotate disabled: it's enabled in visualize mode.");
+
+			type_rotate = "vertical";
+		}
+		
+		function resetMenuside() {
+			$("#showAspects").attr("id","hideAspects");
+		}
+	</script>
+
+</body>
+
+</html>

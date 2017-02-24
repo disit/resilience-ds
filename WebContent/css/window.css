@@ -1,0 +1,118 @@
+/* ResilienceDS
+   Copyright (C) 2017 DISIT Lab http://www.disit.org - University of Florence
+
+   This program is free software: you can redistribute it and/or modify
+   it under the terms of the GNU Affero General Public License as
+   published by the Free Software Foundation, either version 3 of the
+   License, or (at your option) any later version.
+
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU Affero General Public License for more details.
+
+   You should have received a copy of the GNU Affero General Public License
+   along with this program.  If not, see <http://www.gnu.org/licenses/>. */
+
+@CHARSET "ISO-8859-1";
+
+.ui-widget.custom-dialog {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.ui-widget.custom-dialog input {
+    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+}
+
+.ui-widget-content.custom-dialog {
+	
+    background: #eeeeee;
+    color: #222222;
+    
+    -webkit-border-radius: 10;
+  	-moz-border-radius: 10;
+  	border-radius: 10px;
+/*   	border: solid #1f628d 1px; */
+  	border: solid #888888 2px;
+}
+
+.ui-dialog.custom-dialog {
+    left: 0;
+    outline: 0 none;
+    padding: 0 !important;
+    position: absolute;
+    top: 0;
+}
+.ui-dialog.custom-dialog .l_title{
+	font-weight: bold;	
+}
+
+.ui-dialog #modal_Function #inputname, .ui-dialog #modal_Function_Info #inputname, .ui-dialog #modal_Group #inputname{
+	width: 300px;
+}
+
+.ui-dialog #modal_Function #inputdescription, .ui-dialog #modal_Function_Info #inputdescription, .ui-dialog #modal_Function #inputdescription{
+	width: 300px;
+}
+
+.ui-dialog #modal_Aspect input{
+	width: 300px;
+}
+
+.ui-dialog.custom-dialog .ui-dialog-content {
+    background: none repeat scroll 0 0 transparent;
+    border: 0 none;
+    overflow: auto;
+    position: relative;
+    padding: 0 !important;
+    margin: auto;  
+}
+
+.ui-dialog.custom-dialog .ui-widget-header {
+    background: #aaaaaa;
+    border: 0;
+    color: #fff;
+    font-weight: bold;
+}
+
+.ui-dialog.custom-dialog .ui-dialog-titlebar {
+    padding: 0.1em .5em;
+    position: relative;
+    font-size: 1em;
+}
+
+.ui-dialog .ui-dialog-buttonpane {
+	background: #eee;
+}
+
+.ui-dialog .ui-button {
+	background: #fff !important;
+    color: #222;
+    
+    -webkit-border-radius: 5;
+  	-moz-border-radius: 5;
+  	border-radius: 5px;
+  	
+  	border: solid #888 1px;
+}
+
+.ui-dialog .ui-button:hover {
+	background: #eee;
+	border: 1px solid rgba(256,256,256,0.75);
+	
+	box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);
+	-moz-box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);
+	-webkit-box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);
+}
+
+.ui-dialog .ui-button:focus {
+	background: #fff;
+	
+	box-shadow: inset 0 1px 6px rgba(256,256,256,0.75);
+	-moz-box-shadow: inset 0 1px 6px rgba(256,256,256,0.75);
+	-webkit-box-shadow: inset 0 1px 6px rgba(256,256,256,0.75);
+}
+
+#div_insert_export_model {
+	margin-left: 5px;
+}

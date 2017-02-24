@@ -1,0 +1,449 @@
+<!-- ResilienceDS
+Copyright (C) 2017 DISIT Lab http://www.disit.org - University of Florence
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>. -->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+	<meta charset="ISO-8859-1">
+	<title>Sub menu</title>
+	
+	<link rel="stylesheet" href="css/menu/submenu.css" type="text/css" media="screen" />
+	<script type="text/javascript" src="js/graphics/windows/loadXFMV_window.js"></script>
+</head>
+
+<body>
+
+	<div id="buttons-sub">
+	
+		<button id="buttonClone" type="button" class="button-sub" onclick="clone()" title="Clone"></button> 
+		<!-- <button id="buttonImport" type="button" class="button-sub" onclick="importInstance()" title="Import"></button>  -->
+<!-- 		<button id="buttonEdit" type="button" class="button-sub " onclick="edit()" title="Edit"><i class="fa fa-pencil fa-2x" aria-hidden="true"></i></button> -->
+		<button id="buttonEdit" type="button" class="button-sub " onclick="edit()" title="Edit"></button>
+		<button id="buttonComputeDecision" type="button" class="button-sub" onclick="computeDecision()" title="Compute Decision for a instance"></button>
+		<button id="buttonDelete" type="button" class="button-sub" onclick="deleteSelect()" title="Delete"></button>
+<!-- 		<button id="buttonSave" type="button" class="button-sub" onclick="save()" title="Save"></button> -->
+<!-- 		<button id="buttonReset" type="button" class="button-sub" onclick="reset()" title="Reset"></button> -->
+		<button id="buttonImportFMV" type="button" class="button-sub" onclick="createLoadXFMVWindow()" title="Import XFMV file"></button>
+		<button id="buttonExport" type="button" class="button-sub" onclick="createExportWindow()" title="Export FRAM"></button>
+		<button id="buttonAddFRAMGroup" type="button" class="button-sub" onclick="addFRAMGroup()" title="Add Group" style="display:none;"></button>
+		<button id="buttonAddFunction" type="button" class="button-sub" onclick="addFRAMFunction()" title="Add Function" style="display:none;"></button>
+		<button id="buttonForward" type="button" class="button-sub forwardEmpty" onmouseup="FRAMforward()" title="Forward" style="display:none;" disabled="disabled" onmousedown="submenuPressForward()" onmouseout="submenuViewForward()"></button>		
+		<button id="buttonBack" type="button" class="button-sub backEmpty" onmouseup="FRAMback()" title="Un Do" style="display:none;" disabled="disabled" onmousedown="submenuPressBack()" onmouseout="submenuViewBack()"></button>		
+	</div>
+	
+   <div id="load_xfmv" style="display:none;" class="IF-window" title="Load an XFMV file.">
+		<div id="load_file_div" class="IF-tab">			
+			<input value="Load" id="fileDialog" type="file" />
+
+			<span id="errmsg_IF" class="error_msg"></span>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+	
+		var id_user;
+		
+		var importData = false;
+	
+// 		jQuery(function($) {
+// 			$( document ).tooltip();
+// 		});
+		//Creates the submenu relatives for the page. The id indicates the operation: 1: View Model. 2: New Model. 3:Edit Model. 4:Instance show 
+		// 5:New Instance creation 6:Instance modification.
+		function createSubmenu(idPage, idUser)
+		{
+			if($('#sub-menu').css("display") == "none")
+				$('#sub-menu').show("slow");
+			
+			id_page_section = idPage;
+			id_user = idUser;
+			
+			disableSubMenu();
+			
+			if(idPage == 1 || idPage == 3)			
+				initInfoDiv("model");
+			else if(idPage == 4 || idPage == 5 || idPage == 6)
+				initInfoDiv("instance");
+			
+			if(idPage == 1)
+			{
+				if(user.getId() == idUser) //Controllo se l'utente è il creatore del modello
+				{
+					//XXX Old____ByPassed. In our case we can modify even with a linked process.
+					if(!controlChildrenModel()) // Controllo se il modello ha istanze collegate
+					{
+						$('#buttonEdit').attr('disabled',false).css('opacity',1);
+						$('#buttonEdit').attr("title","Edit Model");
+					}
+					else{
+						$('#buttonEdit').attr("title","Edit model disabled: it's not possible modify model with linked instances");
+					}
+					//_______
+					$('#buttonEdit').attr('disabled',false).css('opacity',1).attr("title","Edit Model");
+					$('#buttonDelete').attr('disabled',false).css('opacity',1);
+					$('#buttonDelete').attr("title","Delete Model");
+					
+					$("#buttonImport").attr("title","Import data from another process disabled.");
+					$("#buttonExport").attr('disabled',false).css('opacity',1);;
+				}
+				else{
+					$('#buttonEdit').attr("title","Edit model disabled: it's not possible modify a model of another user.");
+					$('#buttonDelete').attr("title","Delete model disabled: it's not possible delete a model of another user.");
+					$("#buttonImport").attr("title","Import data from another process disabled.");
+					$("#buttonExport").attr("title","Export data from another process disabled.");
+				}
+				
+				$('#buttonClone').attr('disabled',false).css('opacity',1);
+				$('#buttonClone').attr("title","Clone Model");
+				
+				$('#buttonSave').attr("title","Save Model: operation enabled in edit configuration.");
+				$('#buttonReset').attr("title","Reset Model: operation enabled in edit configuration.");
+			}
+			else if(idPage == 2 || idPage == 3) // Modalità di creazione nuovo modello(idPage == 2) e modalità di modifica di un modello visualizzato(idPage == 3)
+			{
+				$('#buttonEdit').attr("title","Edit model disabled: to modify model return on visualize configuration.");
+				$('#buttonDelete').attr("title","Delete model disabled: to delete model return on visualize configuration.");
+				// $('#buttonClone').attr("title","Clone model disabled: to clone model return on visualize configuration. ");
+				$("#buttonImport").attr("title","Import data from another process disabled.");
+				$("#buttonExport").attr("title","Export data from another process disabled.");
+				
+				$('#buttonSave').attr('disabled',false).css('opacity',1);
+				$('#buttonSave').attr("title","Save Model on DB");
+				
+				$('#buttonReset').attr('disabled',false).css('opacity',1);
+				$('#buttonReset').attr("title","Reset Model");
+							
+				$('#buttonBack').css('display','inherit');
+				$('#buttonForward').css('display','inherit');
+				$('#buttonAddFunction').css('display','inherit');
+				$('#buttonAddFRAMGroup').css('display','inherit');
+				$('#buttonClone').attr("title","Clone model");$('#buttonClone').attr('disabled',false).css('opacity',1);
+			}
+			else if(idPage == 4) // Modalità di visualizzazione dell'istanza - Button Edit, ComputeDecision, Clone
+			{
+				if(user.getId() == idUser) // Controllo se l'utente loggato è il proprietario dell'istanza selezionata
+				{
+					$('#buttonEdit').attr('disabled',false).css('opacity',1);
+					$('#buttonEdit').attr("title","Edit instance");	
+					
+					/*if(util.getIndexById(modelinstances_db, modelInstanceId) != -1)
+					{
+						if(modelinstances_db[util.getIndexById(modelinstances_db, modelInstanceId)].getStatus() == 1)
+						{
+							$('#buttonEdit').attr('disabled','disabled').css('opacity',0.5);
+							$('#buttonEdit').attr("title","Edit process disabled: it's not possible modify a process during the execution of compute decision.");
+						}
+					}
+					else if(util.getIndexById(modelinstances_tmp, modelInstanceId) != -1)
+					{
+						if(modelinstances_tmp[util.getIndexById(modelinstances_tmp, modelInstanceId)].getStatus() == 1)
+						{
+							$('#buttonEdit').attr('disabled','disabled').css('opacity',0.5);
+							$('#buttonEdit').attr("title","Edit process disabled: it's not possible modify a process when during the execution of compute decision.");
+						}
+					}*/
+					
+					$('#buttonEdit').attr('disabled',false).css('opacity',1);
+					$('#buttonEdit').attr("title","Edit instance");	
+					
+					$('#buttonComputeDecision').attr('disabled',false).css('opacity',1);
+					$('#buttonComputeDecision').attr('title','Compute decision for selected instance');
+					
+					$('#buttonDelete').attr('disabled',false).css('opacity',1);
+					$('#buttonDelete').attr("title","Delete instance");
+
+					$('#buttonExport').attr('disabled',false).css('opacity',1);
+					$('#buttonExport').attr("title","Export Model");
+				}
+				else{
+					$('#buttonEdit').attr("title","Edit process disabled: it's not possible modify a process of another user.");
+	 				$('#buttonDelete').attr("title","Delete process disabled: it's not possible delete a process of another user.");
+	 				$('#buttonComputeDecision').attr('title',"Compute decision disabled: it's not possible compute decision for a process of another user.");	
+					$("#buttonExport").attr("title","Export data from another process disabled.");
+				}
+
+				// $('#buttonClone').attr('disabled',false).css('opacity',1);
+				// $('#buttonClone').attr("title","Clone instance");	
+				
+				$("#buttonImport").attr("title","Import data from another process disabled.");
+				$('#buttonSave').attr("title","Save instance: operation enabled in edit configuration.");
+				$('#buttonReset').attr("title","Reset instance: operation enabled in edit configuration.");
+			}
+			else if(idPage == 5 || idPage == 6) // Modalità di creazione nuova istanza(idPage == 5) e modalità di modifica di un'istanza visualizzata(idPage == 6)
+			{
+				$('#buttonEdit').attr("title","Edit process disabled: to modify process return on visualize configuration.");
+				$('#buttonDelete').attr("title","Delete process disabled: to modify process return on visualize configuration.");
+				$('#buttonComputeDecision').attr('title',"Compute decision disabled: to modify process return on visualize configuration.");
+				$('#buttonClone').attr("title","Clone process disabled: to modify process return on visualize configuration.");	
+				
+				$('#buttonSave').attr('disabled',false).css('opacity',1);
+				$('#buttonSave').attr("title","Save Instance");
+				
+				$('#buttonReset').attr('disabled',false).css('opacity',1);
+				$('#buttonReset').attr("title","Reset Instance");
+				
+				$('#buttonExport').attr('disabled',false).css('opacity',1);
+				$("#buttonExport").attr("title","Export FRAM.");					
+				var index_cloned = util.getIndexById(models_cloned, modelId);
+				if(index_cloned != -1)
+				{
+					$("#buttonImport").attr("title","Import data from another instance.");
+					$('#buttonImport').attr('disabled',false).css('opacity',1);
+					
+				}
+				else{
+					$("#buttonImport").attr("title","Import data from another process disabled.");
+				}
+			}
+		}		
+		
+		function clone()
+		{
+// 			alert(modelId + modelInstanceId);
+			if(id_page_section == 1 || id_page_section == 2 || id_page_section == 3 )
+				// CHIAMATA REST PER LA CLONAZIONE DEL MODELLO SELEZIONATO
+				clientRest.cloneModel("cloneModelWithoutInstance"); // Clonazione senza istanze
+				
+			if(id_page_section == 4)
+			{
+				// CHIAMATA REST PER LA CLONAZIONE DEL MODELLO SELEZIONATO
+				if(user.getId() != id_user) // Se l'utente loggato non è il proprietario dell'istanza, si clona sia l'istanza sia il modello collegato
+					clientRest.cloneModel("cloneModelWithInstance"); 
+				else
+					clientRest.cloneModelInstance();
+			}
+		}
+		
+		function importInstance()
+		{
+// 			enabledSelect();
+			setSelect();
+		}
+		
+		function edit()
+		{
+			if(id_page_section == 1)
+				openLink("edit_model.jsp",'section');
+				
+				
+			if(id_page_section == 4)
+			{
+				console.log("Edit the instance: "+modelInstanceId);
+				if(util.getIndexById(modelinstances_db, modelInstanceId) != -1)
+				{
+					openLink("edit_FRAMinstance.jsp",'section');
+					
+					/*if(modelinstances_db[util.getIndexById(modelinstances_db, modelInstanceId)].getStatus() == 2)
+					{
+						var responseConfirm = confirm("Are you sure to edit the instance? \nThe decision will be no more valid!");
+						if (responseConfirm == true) {
+							openLink("edit_instance.jsp",'section');
+						} 
+					}
+					else{
+						openLink("edit_instance.jsp",'section');
+					}*/
+				}
+				else if(util.getIndexById(modelinstances_tmp, modelInstanceId) != -1)
+				{
+					openLink("edit_FRAMinstance.jsp",'section');
+					/* 
+					if(modelinstances_tmp[util.getIndexById(modelinstances_tmp, modelInstanceId)].getStatus() == 2)
+					{
+						var responseConfirm = confirm("Are you sure to edit the instance? \nThe decision will be no more valid!");
+						if (responseConfirm == true) {
+							openLink("edit_instance.jsp",'section');
+						} 
+					}
+					else{
+						openLink("edit_instance.jsp",'section');
+					}*/
+				}
+				else{
+					console.log("Model not found in the client side.");
+					alert("Model not found in the temporary store. Contact the admin.");
+				}
+			}
+		}
+		
+		//XXX OLD
+		function computeDecision()
+		{		
+			if(!controlLeafsIFIsEmpty()) // Controllo se tutte le foglie hanno l'if settato e i pesi sugli archi - funzione in visualize_instance.jsp
+			{
+				if(util.getIndexById(modelinstances_db, modelInstanceId) != -1)
+				{
+					/* if(modelinstances_db[util.getIndexById(modelinstances_db, modelInstanceId)].getStatus() == 2)
+					{
+						var responseConfirm = confirm("Are you sure to compute the new decision? \nThe old decision will be no more valid!");
+						if (responseConfirm == true) {
+							computeDecisionOk();
+						} 
+					}
+					else{
+						computeDecisionOk();
+					} */
+				}
+				else if(util.getIndexById(modelinstances_tmp, modelInstanceId) != -1)
+				{
+					/* if(modelinstances_tmp[util.getIndexById(modelinstances_tmp, modelInstanceId)].getStatus() == 2)
+					{
+						var responseConfirm = confirm("Are you sure to compute the new instance? \nThe old decision will be no more valid!");
+						if (responseConfirm == true) {
+							computeDecisionOk();
+						} 
+					}
+					else{
+						computeDecisionOk();
+					} */
+				}
+			}		
+		}
+		//XXX OLD
+		function computeDecisionOk()
+		{
+//				openLink("compute_instance.jsp",'section');
+			
+			if(util.getIndexById(modelinstances_db, modelInstanceId) != -1)
+				modelinstances_db[util.getIndexById(modelinstances_db, modelInstanceId)].setStatus(1);
+			else if(util.getIndexById(modelinstances_tmp, modelInstanceId) != -1)
+				modelinstances_tmp[util.getIndexById(modelinstances_tmp, modelInstanceId)].setStatus(1);
+			
+			view.updateListStatusInstanceModels();
+			
+			$(".loading").fadeIn("slow");
+			view.clearMainDIV();
+			
+			clientRest.computeDecision();
+		}
+		
+		function deleteSelect()
+		{
+			if(id_page_section == 1)
+			{
+				if(confirm("Do you want to delete your selected model?\n All linked instances will delete..."))
+					clientRest.deleteModel(); // CHIAMATA REST PER LA CANCELLAZIONE DEL MODELLO SELEZIONATO
+			}	
+			if(id_page_section == 4)
+				if(confirm("Do you want to delete your selected instance?"))
+					clientRest.deleteModelInstance(); // CHIAMATA REST PER LA CANCELLAZIONE DELL'ISTANZA SELEZIONATA
+		}
+		
+		function save()
+		{
+// 			alert(id_page_section);
+			
+// 			if(id_page_section == 2)
+// 				confirmNewModel();
+// 			else if(id_page_section == 3)
+// 				confirmEditedModel();
+// 			else if(id_page_section == 5) 
+// 				confirmNewInstance();
+// 			else if(id_page_section == 6)
+// 				confirmEditedInstance();
+		}
+		
+		function reset()
+		{
+			if(id_page_section == 2)
+				clearNewModel();
+			else if(id_page_section == 3)
+				clearEditedModel();
+			else if(id_page_section == 5) 
+				clearNewInstance();
+			else if(id_page_section == 6)
+				clearEditedInstance();
+		}
+		
+		function disableSubMenu()
+		{
+			$("#buttonClone").attr('disabled','disabled').css('opacity',0.5);
+			$("#buttonImport").attr('disabled','disabled').css('opacity',0.5);
+			$("#buttonExport").attr('disabled','disabled').css('opacity',0.5);
+			$("#buttonEdit").attr('disabled','disabled').css('opacity',0.5);
+			$("#buttonComputeDecision").attr('disabled','disabled').css('opacity',0.5);
+			$("#buttonDelete").attr('disabled','disabled').css('opacity',0.5);
+			$("#buttonSave").attr('disabled','disabled').css('opacity',0.5);
+			$("#buttonReset").attr('disabled','disabled').css('opacity',0.5);
+			$("#buttonReset").attr('disabled','disabled').css('opacity',0.5);
+			$('#buttonBack').css("display","none");
+			$('#buttonForward').css("display","none");
+			$('#buttonAddFunction').css("display","none");
+			$('#buttonAddFRAMGroup').css("display","none");
+						
+			$('#model_instancemodel_info').css("display","none");
+			
+// 			if(id_page_section != 5 && id_page_section != 6){
+// 				$("#buttonImport").attr('disabled','disabled').css('opacity',0.5);
+// 				$("#buttonImport").attr("title","Import data from another process disabled:\n for enable it, clone a model (eventually modify it) and create a new instance.");
+// 			}
+		}
+
+		function controlChildrenModel()
+		{
+			for(var j = 0; j < modelinstances_db.length; j++)
+			{
+				if(modelinstances_db[j].getModelId() == modelId)
+					return true;
+			}
+			return false;
+		}
+		//-----Ale: Functions for back button on the FRAM view ----
+		function submenuViewBack(){
+			$("#buttonBack").attr("class","button-sub backActive").attr("disabled",false);
+		}
+		
+		function submenuDisableBack(){
+			$("#buttonBack").attr("class","button-sub backEmpty").attr("disabled","disabled");
+		}
+		
+		function submenuPressBack(){
+			$("#buttonBack").attr("class","button-sub backPressed");	
+		}
+		//--------End for back functions--------------------------------------------
+		//-----Ale: Functions for forward button on the FRAM view ----
+		function submenuViewForward(){
+			$("#buttonForward").attr("class","button-sub forwardActive").attr("disabled",false);
+		}
+		
+		function submenuDisableForward(){
+			$("#buttonForward").attr("class","button-sub forwardEmpty").attr("disabled","disabled");
+		}
+		
+		function submenuPressForward(){
+			$("#buttonForward").attr("class","button-sub forwardPressed");	
+		}
+		//--------End for forward functions--------------------------------------------
+// 		function enableImport()
+// 		{
+// 			$("#buttonImport").attr('disabled',false).css('opacity',1);
+// 			$("#buttonImport").attr("title","Import data from another instance");
+			
+// 			importData = true;
+// 		}
+		
+// 		function importDataDone()
+// 		{
+// 			importData = false;
+// 		}
+		
+	</script>
+
+</body>
+
+</html>

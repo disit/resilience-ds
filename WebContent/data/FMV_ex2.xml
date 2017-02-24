@@ -1,0 +1,44 @@
+<?xml version="1.0" standalone="yes"?>
+<FM Version="0,0,2,0">
+  <Functions>
+    <Function fnStyle="0" Tp="-1" Pp="-1" x="135" y="224">
+      <IDNr>0</IDNr>
+      <FunctionType>0</FunctionType>
+      <IDName>Discharge patient</IDName>
+    </Function>
+    <Function fnStyle="0" Tp="-1" Pp="-1" x="372" y="222">
+      <IDNr>1</IDNr>
+      <FunctionType>2</FunctionType>
+      <IDName>Receive patient in nursing home</IDName>
+    </Function>
+  </Functions>
+  <Aspects/>
+  <Controls/>
+  <Inputs>
+    <Input>
+      <IDNr>1</IDNr>
+      <IDName>not_described</IDName>
+      <FunctionIDNr>0</FunctionIDNr>
+    </Input>
+    <Input>
+      <IDNr>2</IDNr>
+      <IDName>patient_discharged</IDName>
+      <FunctionIDNr>1</FunctionIDNr>
+    </Input>
+  </Inputs>
+  <Outputs>
+    <Output>
+      <IDNr>1</IDNr>
+      <IDName>epicrisis</IDName>
+      <FunctionIDNr>0</FunctionIDNr>
+    </Output>
+    <Output>
+      <IDNr>2</IDNr>
+      <IDName>patient_discharged</IDName>
+      <FunctionIDNr>0</FunctionIDNr>
+    </Output>
+  </Outputs>
+  <Preconditions/>
+  <Resources/>
+  <Times/>
+</FM>

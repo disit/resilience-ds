@@ -1,0 +1,586 @@
+/* ResilienceDS
+   Copyright (C) 2017 DISIT Lab http://www.disit.org - University of Florence
+
+   This program is free software: you can redistribute it and/or modify
+   it under the terms of the GNU Affero General Public License as
+   published by the Free Software Foundation, either version 3 of the
+   License, or (at your option) any later version.
+
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU Affero General Public License for more details.
+
+   You should have received a copy of the GNU Affero General Public License
+   along with this program.  If not, see <http://www.gnu.org/licenses/>. */
+
+@CHARSET "ISO-8859-1";
+
+
+body {
+	overflow-y: hidden;
+}
+
+.rect{
+	fill: white;
+	stroke: #000;
+	stroke-width: 2px;
+}
+
+.rect-green{
+	fill: green;
+	stroke: #000;
+	stroke-width: 1px;
+	
+	opacity: 1;
+	filter: alpha(opacity=100);
+}
+
+.rect-white{
+	fill: white;
+	stroke: #000;
+	stroke-width: 1px;
+	
+	opacity: 1;
+	filter: alpha(opacity=100);
+}
+
+.rect-red{
+	fill: red;
+	stroke: #000;
+	stroke-width: 1px;
+	
+	opacity: 1;
+	filter: alpha(opacity=100);
+}
+
+text {
+	font: 13px sans-serif;			
+	font-weight: bold;
+	fill: #000;
+}
+
+.link-label {
+	font: 12px sans-serif;
+	font-weight: bold;
+	text-transform: capitalize;
+	fill: #000;
+}
+
+.link {
+	fill: none;
+	stroke: #000;
+	stroke-width: 2px;
+}
+
+/* ************************************************************ */
+/* **************** Objective instance window ***************** */
+/* ************************************************************ */
+
+#div_insert_objective input{
+	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+	font-size: 14px;
+	font-weight: bold;
+	text-shadow: 1px 1px 0 rgba(256,256,256,0.5);
+	
+	height: 25px;
+	margin-top:3%;
+	margin-left:12%;
+	
+	background: #fff;
+	border: 1px solid #fff;
+	border-radius: 5px;
+	
+	box-shadow: inset 0 1px 3px rgba(0,0,0,1.0);
+	-moz-box-shadow: inset 0 1px 3px rgba(0,0,0,1.0);
+	-webkit-box-shadow: inset 0 1px 3px rgba(0,0,0,1.0);
+}
+
+/* ************************************************************ */
+/* ************** Matrix/vector weights window **************** */
+/* ************************************************************ */
+
+.weight-tab {
+	width: 49%;
+	height: 97%;
+	
+	margin-top: 4px;
+	
+	-webkit-border-radius: 10;
+	-moz-border-radius: 10;
+	border-radius: 10px;
+	border: solid #888888 2px;
+	
+	overflow: auto;
+}
+
+#matrix_tab {
+	float: left;
+}
+
+#vector_tab {
+	float: right;
+}
+
+.weight-tab input {
+	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+	font-size: 14px;
+	font-weight: bold;
+	text-shadow: 1px 1px 0 rgba(256,256,256,0.5);
+	
+	height: 25px;
+	
+	background: #fff;
+	border: 1px solid #fff;
+	border-radius: 5px;
+	
+	box-shadow: inset 0 1px 3px rgba(0,0,0,1.0);
+	-moz-box-shadow: inset 0 1px 3px rgba(0,0,0,1.0);
+	-webkit-box-shadow: inset 0 1px 3px rgba(0,0,0,1.0);
+}
+
+.weight-tab input:disabled {
+	background: #eee;
+}
+
+/* ************************************************************ */
+/* **************** IF/ Function logic window ***************** */
+/* ************************************************************ */
+
+hr { 
+	display: block; 
+	height: 1px;
+    border: 0; 
+    border-top: 1px solid #ccc;
+    margin: 0; 
+    padding: 0; 
+}
+
+::-webkit-input-placeholder {
+   text-shadow: 0px 0px 0 rgba(0, 0, 0, 0);
+}
+
+:-moz-placeholder { /* Firefox 18- */
+   text-shadow: 0px 0px 0 rgba(0, 0, 0, 1);
+}
+
+::-moz-placeholder {  /* Firefox 19+ */
+   text-shadow: 0px 0px 0 rgba(0, 0, 0, 1);
+}
+
+:-ms-input-placeholder {  
+   text-shadow: 0px 0px 0 rgba(0, 0, 0, 1);
+}
+
+.IF-window {
+	overflow: hidden !important;
+	resize: none;
+}
+
+.IF-window input {
+	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+	font-size: 14px;
+	font-weight: bold;
+	text-shadow: 1px 1px 0 rgba(256,256,256,0.5);
+	
+	height: 25px;
+	
+	background: #fff;
+	border: 1px solid #fff;
+	border-radius: 5px;
+	
+	box-shadow: inset 0 1px 3px rgba(0,0,0,1.0);
+	-moz-box-shadow: inset 0 1px 3px rgba(0,0,0,1.0);
+	-webkit-box-shadow: inset 0 1px 3px rgba(0,0,0,1.0);
+}
+
+#input_url_repository_criteria {
+	font-weight: normal !important;
+	
+	margin-left: 2px;
+	width: 98%;
+}
+
+.IF-tab {
+	width:98%;
+	height:13%;
+	
+	margin-left: 3px;
+	margin-top: 2px;
+	
+	-webkit-border-radius: 10;
+	-moz-border-radius: 10;
+	border-radius: 10px;
+	border: solid #888888 2px;
+}
+
+.GFI-tab {
+	width:98%;
+	height:13%;
+	
+	margin-left: 3px;
+	margin-top: 2px;
+	
+	-webkit-border-radius: 10;
+	-moz-border-radius: 10;
+}
+
+.IF-tab label {
+	display: inline-block;
+	margin-left: 10px;
+}
+
+#modal_Instance .IF-tab select{
+	width: 130px;
+}
+
+.IF-tab select {
+    margin-left: 5%;
+}
+
+.LF-tab {
+	width:98%;
+	height: 85%;
+	
+	margin-left: 3px;
+	
+	-webkit-border-radius: 10;
+	-moz-border-radius: 10;
+	border-radius: 10px;
+	border: solid #888888 2px;
+}
+
+.LF-div {
+	width: 100%;
+	height: 30%;
+}
+
+.content-label-LF {
+	float:left;
+	width: 95%;
+	height: 12px;
+}
+
+.LF-tab label {
+	display:inline;
+	
+	height: 12px;
+}
+
+#labelResultLF1, #labelResultLF2{
+	margin-left: 10%;
+	
+	font-size: 11px !important;
+}
+
+#labelThreshold1LF1, #labelThreshold1LF2{
+	margin-left: 46%;
+	
+	font-size: 11px !important;
+}
+
+#labelThreshold2LF1, #labelThreshold2LF2{
+	margin-left: 7%;
+	
+	font-size: 11px !important;
+}
+
+.LF-div textarea {
+	
+	width: 98%;
+	margin-left: 2px;
+	resize: none;
+	
+	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+	font-size: 16px;
+	text-shadow: 1px 1px 0 rgba(256,256,256,0.5);
+	
+	background: #fff;
+	border: 1px solid #fff;
+	border-radius: 5px;
+	
+	height: 60px;
+	
+	box-shadow: inset 0 1px 3px rgba(0,0,0,1.0);
+	-moz-box-shadow: inset 0 1px 3px rgba(0,0,0,1.0);
+	-webkit-box-shadow: inset 0 1px 3px rgba(0,0,0,1.0);
+}
+
+.img-status-query {
+	position: relative;
+	
+	width: 18px;
+	height: 18px;
+	
+	bottom: 24px;
+	right: 2px;
+}
+
+.button-play-query {
+	float:left;
+	width: 25px;
+	height: 25px;
+	margin-top: 2px;
+	margin-left: 1%;
+	
+	background: url(../image/instance/play.png) no-repeat center;
+	background-size: 100%;
+}
+
+.LF-div input{
+	display:inline;
+	margin-left: 5%;	
+}
+
+.LF-div select {
+	
+	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+	font-size: 16px;
+	text-shadow: 1px 1px 0 rgba(256,256,256,0.5);
+	
+	background: #fff;
+	border: 1px solid #fff;
+	border-radius: 5px;
+	
+	margin-left: 5px;
+/* 	margin-top: 10px; */
+	height: 25px;
+	
+	box-shadow: inset 0 1px 3px rgba(0,0,0,1.0);
+	-moz-box-shadow: inset 0 1px 3px rgba(0,0,0,1.0);
+	-webkit-box-shadow: inset 0 1px 3px rgba(0,0,0,1.0);
+}
+
+#compare1, #compare2 {
+	margin-left: 3%;
+}
+
+#select_LF1 {
+	margin-left: 10%;
+}
+
+#threshold1LF1, #threshold1LF2 {
+	margin-left: 1%;
+}
+
+#threshold2LF1, #threshold2LF2 {
+	margin-left: 1%;
+}
+
+#selectIFPart1, #selectIFPart2 {
+	margin-left: 25%;
+}
+
+#resultQuery1, #resultQuery2 {
+	margin-left: 1%;
+}
+
+.title-LF-div {
+	width: 100%;
+	
+/* 	display:inline; */
+	margin-top: 3px;
+	margin-left: 40%;
+	text-align: center;
+	
+	font-size: 14px !important;
+	
+	margin-bottom: 3px;
+}
+
+#title_LFM {
+	margin-left: 36%;
+}
+
+.error_msg {
+	color:red;
+/* 	position:absolute; */
+	position: relative;
+	bottom: 10px;
+}
+
+.input-if {
+	margin-top: 5px;
+	margin-left:65px;
+	
+	text-align: center;
+}
+
+#label_favor { 
+	margin-left: 23%;
+}
+
+#label_neutral {
+	margin-left: 2%;
+}
+
+#label_contrary {
+	margin-left: 2%;
+}
+
+#label_true {
+	margin-left: 5%;
+}
+
+#label_false {
+	margin-left: 4%;
+}
+
+#truefalse_IF {
+	margin-top: 2%;
+}
+
+#truefalse_IF input {
+	margin-left: 10%;
+}
+
+/* ************************************************************ */
+/* ************ CSS Tooltip Info Criteria Instance ************ */
+/* ************************************************************ */
+/*  */
+
+.d3-tip {
+/* 	font-family: 'Arial Narrow', Arial, sans-serif; */
+	
+	height: 150px;
+	width: 150px;
+  	padding: 12px; 
+  	color: #000;
+  	background-color:#eeeeee;
+  
+	-webkit-border-radius: 10;
+	-moz-border-radius: 10;
+	border-radius: 10px;
+	border: solid #1f628d 2px;
+	 	
+	opacity: 0.7;
+	filter: alpha(opacity=70);
+	
+	display: clear;
+	
+	position: absolute;
+}
+
+.span-tooltip {
+	font-size: 14px;
+	
+	line-height: 16px;
+	
+	width: 130px;
+
+	float: left;
+	
+	overflow-y:auto;
+}
+
+#spanUrlInstance {
+	margin-top: 12px;
+	height: 35px;
+}
+
+#spanDescriptionInstance {
+	margin-top: 2px;
+	height: 70px;
+}
+
+.d3-tip a {
+	-ms-word-break: break-all;
+    word-break: break-all;
+
+     /* Non standard for webkit */
+     word-break: break-word;
+
+	-webkit-hyphens: auto;
+  	-moz-hyphens: auto;
+    hyphens: auto;
+}
+
+#buttonModifyCriteriaInstance {
+	background: url(../image/modify.png) no-repeat center;
+	background-size: 100%;
+
+	position: absolute;
+ 	right: 5px;
+ 	top:5px; 
+	width: 24px;
+	height: 24px;
+	
+	-webkit-border-radius: 6;
+  	-moz-border-radius: 6;
+  	border-radius: 6px;
+  	border: solid #1f628d 2px;
+}
+
+#buttonSaveModifyCriteriaInstance {
+	
+	background: url(../image/menu-sub/save_2.png) no-repeat center;
+	background-size: 100%;
+
+	position: absolute;
+ 	right: 5px;
+ 	top:5px; 
+	width: 24px;
+	height: 24px;
+	
+	-webkit-border-radius: 6;
+  	-moz-border-radius: 6;
+  	border-radius: 6px;
+  	border: solid #1f628d 2px;
+}
+
+.inputtext-tooltip {
+	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+	font-size: 13px;
+	color: #9d9e9e;
+	text-shadow: 1px 1px 0 rgba(256,256,256,1.0);
+	
+	background: #fff;
+	border: 1px solid #fff;
+	border-radius: 5px;
+	
+	box-shadow: inset 0 1px 3px rgba(0,0,0,1.0);
+	-moz-box-shadow: inset 0 1px 3px rgba(0,0,0,1.0);
+	-webkit-box-shadow: inset 0 1px 3px rgba(0,0,0,1.0);
+}
+
+.inputtext-tooltip.edit {
+	
+	margin-top: 20px;
+	width: 120px;
+	
+	float: left;
+}
+
+.inputtext-tooltip.textarea {
+	
+	margin-top: 10px;
+	width: 120px;
+	height: 70px;
+	
+	float: left;
+	
+	resize: none;
+}
+
+/* Creates a small triangle extender for the tooltip */
+.d3-tip:after {
+	box-sizing: border-box;
+	display: inline;
+	font-size: 10px;
+	width: 100%;
+	line-height: 1;
+	color: #1f628d;
+	opacity: 0.7;
+	filter: alpha(opacity=70);
+  	content: "\25BC";
+  	position: absolute;
+  	text-align: center;
+}
+
+/* Style northward tooltips differently */
+.d3-tip.n:after {
+	margin: -1px 0 0 0;
+	top: 100%;
+	left: 0;
+}
+

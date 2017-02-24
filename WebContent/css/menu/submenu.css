@@ -1,0 +1,151 @@
+/* ResilienceDS
+   Copyright (C) 2017 DISIT Lab http://www.disit.org - University of Florence
+
+   This program is free software: you can redistribute it and/or modify
+   it under the terms of the GNU Affero General Public License as
+   published by the Free Software Foundation, either version 3 of the
+   License, or (at your option) any later version.
+
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU Affero General Public License for more details.
+
+   You should have received a copy of the GNU Affero General Public License
+   along with this program.  If not, see <http://www.gnu.org/licenses/>. */
+
+@CHARSET "ISO-8859-1";
+
+
+#sub-menu {
+	
+	/* Div Orizzontale*/
+	position: absolute;
+	left: 40px;
+	top: 15px;
+	width: 350px;
+	height: 50px;
+	padding-top: 5px;
+	padding-left: 2px;
+	
+	opacity:1.0;
+    filter:alpha(opacity=100); /* For IE8 and earlier */
+}
+
+.button-sub {
+	position:relative;
+	width: 32px;
+	height: 32px;
+	
+	-webkit-border-radius: 10;
+  	-moz-border-radius: 10;
+  	border-radius: 10px;
+  	border: solid #1f628d 2px;
+  	
+  	cursor: pointer;
+}
+
+#buttonEdit {
+	background: url(../../image/menu-sub/edit.png) no-repeat center;
+	background-size: 100%;
+}
+
+#buttonSave {
+	background: url(../../image/menu-sub/save_2.png) no-repeat center;
+	background-size: 100%;
+}
+
+#buttonReset {
+	background: url(../../image/menu-sub/reset.png) no-repeat center;
+	background-size: 100%;
+}
+
+#buttonAddFunction {
+	background: url(../../image/menu-sub/hexagon.png) no-repeat center;
+	background-size: 100%;
+	float: right;
+	margin-right: 3px;
+}
+
+#buttonAddFRAMGroup {
+	background: url(../../image/menu-sub/FRAMGroup.png) no-repeat center;
+	background-size: 100%;
+	float: right;
+	margin-right: 3px;
+}
+
+#buttonBack {
+	background-size: 100%;
+	float: right;
+	margin-right: 3px;
+}
+
+#buttonForward {
+	background-size: 100%;
+	float: right;
+	margin-right: 3px;
+}
+
+.backEmpty{
+	background: url(../../image/menu-sub/back_empty.png) no-repeat center;
+}
+
+.backActive{
+	background: url(../../image/menu-sub/back_ready.png) no-repeat center;
+}
+
+.backPressed{
+	background: url(../../image/menu-sub/back_pressed.png) no-repeat center;
+}
+
+.forwardEmpty{
+	background: url(../../image/menu-sub/forward_empty.png) no-repeat center;
+}
+
+.forwardActive{
+	background: url(../../image/menu-sub/forward_ready.png) no-repeat center;
+}
+
+.forwardPressed{
+	background: url(../../image/menu-sub/forward_pressed.png) no-repeat center;
+}
+
+#buttonClone {
+	background: url(../../image/menu-sub/clone.png) no-repeat center;
+	background-size: 100%;
+}
+
+#buttonImport {
+	background: url(../../image/menu-sub/import_2.png) no-repeat center;
+	background-size: 100%;
+}
+
+#buttonExport {
+	background: url(../../image/menu-sub/export_2.png) no-repeat center;
+	background-size: 100%;
+}
+
+#buttonImportFMV {
+	background: url(../../image/menu-sub/import_2.png) no-repeat center;
+	background-size: 100%;
+}
+
+#load_xfmv{
+	height:auto;
+}
+
+#load_file_div{
+	margin-left: 10%;
+    margin-top: 30px;
+}
+
+#buttonDelete {
+	background: url(../../image/menu-sub/trash.png) no-repeat center;
+	background-size: 100%;
+}
+
+#buttonComputeDecision {
+	background: url(../../image/menu-sub/compute.png) no-repeat center;
+	background-size: 100%;
+	display: none;
+}

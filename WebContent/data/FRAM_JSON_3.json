@@ -1,0 +1,120 @@
+{
+	"FMV_VERSION": "0,0,2,0",
+	"Functions": [{
+		"idF": 1,
+		"name": "Respond to test results",
+		"fnStyle": 0,
+		"Tp": -1,
+		"Pp": -1,
+		"FunctionType": 0,
+		"x": 154,
+		"y": 227
+		
+	},{
+		"idF": 2,
+		"name": "Assess the patient",
+		"fnStyle": 0,
+		"Tp": -1,
+		"Pp": -1,
+		"FunctionType": 0,
+		"x": 488,
+		"y": 224
+
+	},{
+		"idF": 3,
+		"name": "Obtain electronic patient data",
+		"fnStyle": 0,
+		"Tp": -1,
+		"Pp": -1,
+		"FunctionType": 0,
+		"x": 185,
+		"y": 420
+
+	}],
+
+	"Aspects": [{
+		"idA": 1,
+		"label": "Test result",
+		"target": 1,
+		"source": null,
+		"type": "input"
+	}, {
+		"idA": 2,
+		"label": "Patient data",
+		"target": 1,
+		"source": 3,
+		"type": "resource"
+	}, {
+		"idA": 3,
+		"label": "Referral to surgeons",
+		"target": 2,
+		"source": 1,
+		"type": "input"
+	}, {
+		"idA": 2,
+		"label": "Patient data",
+		"target": 2,
+		"source": 3,
+		"type": "resource"
+	}, {
+		"idA": 4,
+		"label": "staffing",
+		"target": 2,
+		"source": null,
+		"type": "resource"
+	}, {
+		"idA": 5,
+		"label": "number of patient",
+		"target": 2,
+		"source": null,
+		"type": "time"
+	}, {
+		"idA": 6,
+		"label": "Cancer program",
+		"target": 2,
+		"source": null,
+		"type": "time"
+	}, {
+		"idA": 7,
+		"label": "Secretary’s work routines",
+		"target": 2,
+		"source": null,
+		"type": "control"
+	}, {
+		"idA": 9,
+		"label": "Doctor’s own system",
+		"target": 2,
+		"source": null,
+		"type": "control"
+	}, {
+		"idA": 10,
+		"label": "The good epicrisis",
+		"target": 2,
+		"source": null,
+		"type": "control"
+	}, {
+		"idA": 11,
+		"label": "Epicrisis",
+		"target": null,
+		"source": 2,
+		"type": "output"
+	}, {
+		"idA": 12,
+		"label": "Test result X-rays",
+		"target": null,
+		"source": 2,
+		"type": "output"
+	}, {
+		"idA": 13,
+		"label": "Test result pathology",
+		"target": null,
+		"source": 2,
+		"type": "output"
+	}, {
+		"idA": 8,
+		"label": "Further referral",
+		"target": null,
+		"source": 2,
+		"type": "output"
+	}]
+}

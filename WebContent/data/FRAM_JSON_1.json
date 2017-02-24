@@ -1,0 +1,51 @@
+{
+	"FMV_VERSION": "0,0,2,0",
+	"Functions": [{
+		"idF": 1,
+		"name": "Function_or_Activity",
+		"fnStyle": 0,
+		"Tp": -1,
+		"Pp": -1,
+		"FunctionType": 0, 
+		"x": 0,
+		"y": 0
+
+	}],
+	"Aspects": [{
+		"idA": 1,
+		"label": "Function_Input",
+		"target": 1,
+		"source": null,
+		"type": "input"
+	}, {
+		"idA": 2,
+		"label": "Function_Precondition",
+		"target": 1,
+		"source": null,
+		"type": "precondition"
+	}, {
+		"idA": 3,
+		"label": "Function_Resource",
+		"target": 1,
+		"source": null,
+		"type": "resource"
+	}, {
+		"idA": 4,
+		"label": "Function_Control",
+		"target": 1,
+		"source": null,
+		"type": "control"
+	}, {
+		"idA": 5,
+		"label": "Function_Time",
+		"target": 1,
+		"source": null,
+		"type": "time"
+	}, {
+		"idA": 6,
+		"label": "Function_output",
+		"target": null,
+		"source": 1,
+		"type": "output"
+	}]
+}

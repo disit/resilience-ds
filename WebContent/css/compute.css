@@ -1,0 +1,120 @@
+/* ResilienceDS
+   Copyright (C) 2017 DISIT Lab http://www.disit.org - University of Florence
+
+   This program is free software: you can redistribute it and/or modify
+   it under the terms of the GNU Affero General Public License as
+   published by the Free Software Foundation, either version 3 of the
+   License, or (at your option) any later version.
+
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU Affero General Public License for more details.
+
+   You should have received a copy of the GNU Affero General Public License
+   along with this program.  If not, see <http://www.gnu.org/licenses/>. */
+
+@CHARSET "ISO-8859-1";
+
+
+.title-label {
+	font: 13px sans-serif;			
+	font-weight: bold;
+	fill: #000;
+	
+	display:block;
+	
+	width: 100%;
+	top: 2px;
+	
+	text-align: center;
+}
+
+#titleIFChange {
+	font: 11px sans-serif;			
+	font-weight: bold;
+	fill: #000;
+	
+	display:inline-block;
+	
+	margin-left: 2px;
+	margin-top: 5px;
+	
+	text-align: center;
+}
+
+.IF-div {
+	width: 49%;
+	height: 96%;
+	
+	margin-top: 4px;
+	
+	-webkit-border-radius: 10;
+	-moz-border-radius: 10;
+	border-radius: 10px;
+	border: solid #888888 2px;
+}
+
+#IFUser_div {
+	float: left;
+}
+
+#IFCalculated_div {
+	float: right;
+}
+
+.if-label {
+	
+	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+	font-size: 16px;
+	font-weight: bold;
+	text-shadow: 1px 1px 0 rgba(256,256,256,0.5);
+	
+	width: 50px;
+	height: 25px;
+	
+	float: left;
+	display:block;
+	text-align: center;
+	
+	line-height: 25px;
+	
+	margin-top: 50px;
+	margin-left: 30px;
+	
+	background: #fff;
+	border: 1px solid #fff;
+	border-radius: 5px;
+	
+	box-shadow: inset 0 1px 3px rgba(0,0,0,1.0);
+	-moz-box-shadow: inset 0 1px 3px rgba(0,0,0,1.0);
+	-webkit-box-shadow: inset 0 1px 3px rgba(0,0,0,1.0);
+}
+
+.if-input {
+	
+	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif !important;
+	font-size: 16px;
+	font-weight: bold;
+	text-shadow: 1px 1px 0 rgba(256,256,256,0.5);
+	
+	width: 50px;
+	height: 25px;
+	
+	float: left;
+	display:block;
+	text-align: center;
+	
+	margin-top: 10px;
+	margin-left: 30px;
+	
+	line-height: 25px;
+	
+	background: #fff;
+	border: 1px solid #fff;
+	border-radius: 5px;
+	
+	box-shadow: inset 0 1px 3px rgba(0,0,0,1.0);
+	-moz-box-shadow: inset 0 1px 3px rgba(0,0,0,1.0);
+	-webkit-box-shadow: inset 0 1px 3px rgba(0,0,0,1.0);
+}
